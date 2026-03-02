@@ -53,34 +53,8 @@ class CryptoKeyUtils {
         keyName: keyName);
   }
 
-  static List<int> privateKeyToKeypairBytes(
-      {required List<int> privateKey, required CryptoCoins coin}) {
-    try {
-      final ripplePrivateKey = XRPPrivateKey.fromBytes(privateKey,
-          algorithm: coin.conf.type == EllipticCurveTypes.ed25519
-              ? XRPKeyAlgorithm.ed25519
-              : XRPKeyAlgorithm.secp256k1);
-
-      return ripplePrivateKey.toBytes();
-    } catch (e) {
-      throw AppCryptoExceptionConst.invalidPrivateKey;
-    }
-  }
-
   static IPrivateKey _validatePrivateKey(
       {required List<int> keyBytes, required CryptoCoins coin}) {
-    switch (coin) {
-      case Bip44Coins.ripple:
-      case Bip44Coins.rippleEd25519:
-      case Bip44Coins.rippleTestnet:
-      case Bip44Coins.rippleTestnetED25519:
-        keyBytes = privateKeyToKeypairBytes(coin: coin, privateKey: keyBytes);
-        break;
-      case Bip44Coins.moneroEd25519Slip:
-        return MoneroPrivateKey.fromBytes(keyBytes);
-      default:
-        break;
-    }
     return IPrivateKey.fromBytes(keyBytes, coin.conf.type);
   }
 
@@ -388,43 +362,12 @@ class CryptoKeyUtils {
     return bytes;
   }
 
-  static ImportCustomKeys tonMoneroPrivateSpendKey({
-    required String mnemonic,
-    required CryptoCoins coin,
-  }) {
-    final validate = MoneroMnemonicValidator().isValid(mnemonic);
-    if (!validate) {
-      throw AppCryptoExceptionConst.invalidMnemonic;
-    }
-    final seed = MoneroSeedGenerator(Mnemonic.fromString(mnemonic)).generate();
-    final account = MoneroAccount.fromSeed(seed);
-    return ImportCustomKeys._(
-        privateKey: account.privateSpendKey.toHex(),
-        publicKey: account.privateSpendKey.publicKey.toHex(),
-        coin: coin);
-  }
-
   static List<int> bip39MnemonicToBinary(Mnemonic mnemonic) {
     final decoder = Bip39MnemonicDecoder();
     final language = decoder.findLanguage(mnemonic);
     final decode =
         Bip39MnemonicDecoder().mnemonicToBinaryStr(mnemonic, language.item1);
     return BytesUtils.fromBinary(decode);
-  }
-
-  static ImportCustomKeys tonMnemonicToPrivateKey(
-      {required CryptoCoins coin,
-      required String mnemonic,
-      required String? password,
-      required bool validateTonMnemonic}) {
-    final mn = Mnemonic.fromString(mnemonic);
-    final seed = TonSeedGenerator(mn).generate(
-        password: password ?? "", validateTonMnemonic: validateTonMnemonic);
-    final key = TonPrivateKey.fromBytes(seed);
-    return ImportCustomKeys._(
-        privateKey: key.toHex(),
-        publicKey: key.toPublicKey().toHex(),
-        coin: coin);
   }
 
   static List<int> bip39MnemonicToBytes(Mnemonic mnemonic) {

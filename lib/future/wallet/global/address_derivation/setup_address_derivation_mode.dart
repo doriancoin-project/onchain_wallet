@@ -126,24 +126,8 @@ class _SetupDerivationModeView2State extends State<SetupDerivationModeView>
               icon: sWIcon));
           break;
         case SubWalletType.monero:
-          if (network.type == NetworkType.monero) {
-            keys.add(ViewDerivationKeyModel(
-                name: i.name,
-                created: i.created,
-                subId: i.id,
-                allowDerivation: false,
-                icon: sWIcon));
-          }
           break;
         case SubWalletType.ton:
-          if (network.type == NetworkType.ton) {
-            keys.add(ViewDerivationKeyModel(
-                name: i.name,
-                created: i.created,
-                subId: i.id,
-                allowDerivation: false,
-                icon: sWIcon));
-          }
           break;
       }
     }

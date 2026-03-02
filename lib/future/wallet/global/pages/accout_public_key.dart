@@ -8,7 +8,7 @@ import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
 import 'package:on_chain_wallet/wallet/wallet.dart';
 import 'package:on_chain_wallet/crypto/keys/keys.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
-import 'package:on_chain_wallet/crypto/utils/ripple/ripple.dart';
+
 
 class AccountPublicKeyView extends StatelessWidget {
   const AccountPublicKeyView({super.key});
@@ -45,10 +45,6 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
   late WalletNetwork network;
   String comperessedToNetworkFormat(String key) {
     switch (network.type) {
-      case NetworkType.xrpl:
-        return MethodUtils.nullOnException(
-                () => RippleUtils.toRipplePublicKey(key)) ??
-            key;
       default:
         return key;
     }

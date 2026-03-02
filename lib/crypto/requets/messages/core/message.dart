@@ -5,7 +5,6 @@ import 'package:on_chain_wallet/crypto/constant/tags.dart';
 import 'package:on_chain_wallet/crypto/requets/argruments/argruments.dart';
 import 'package:on_chain_wallet/crypto/requets/messages/crypto/crypto.dart';
 import 'package:on_chain_wallet/crypto/requets/messages/non_encrypted/requests.dart';
-import 'package:on_chain_wallet/crypto/requets/messages/stream/requests/monero_block_tracking.dart';
 import 'package:on_chain_wallet/crypto/requets/messages/wallet/wallet.dart';
 
 class WorkerMessageConst {
@@ -22,8 +21,6 @@ enum CryptoRequestMethod {
   generateMnemonic(CryptoKeyConst.generateToneMenemonic),
   tonMnemonicToPrivateKey(CryptoKeyConst.tonMnemonicToPrivateKey),
   tonMnemonicValidate(CryptoKeyConst.tonMnemonicValidate),
-  generateMoneroMnemonic(CryptoKeyConst.generateMoneroMnemonic),
-  moneroMnemonicToPrivateKey(CryptoKeyConst.moneroMnemonicToPrivateKey),
   generateMasterKey(CryptoKeyConst.generateMasterKey),
   readMasterKey(CryptoKeyConst.readEncryptedMasterKey),
   createMasterKey(CryptoKeyConst.createMasterKey),
@@ -50,12 +47,8 @@ enum CryptoRequestMethod {
 }
 
 enum NoneEncryptedCryptoRequestMethod {
-  moneroFakeTx(CryptoKeyConst.moneroFakeTx),
-  generateRingOutput(CryptoKeyConst.moneroGenerateRingOutput),
   hexToBytes(CryptoKeyConst.hexToBytes),
-  hashing(CryptoKeyConst.hashing),
-  moneroGenerateProof(CryptoKeyConst.moneroGenerateProof),
-  moneroVerifyProof(CryptoKeyConst.moneroVerifyProof);
+  hashing(CryptoKeyConst.hashing);
 
   final List<int> _tag;
   List<int> get tag => [...CryptoArgsType.nonEncrypted.tag, ..._tag];
@@ -70,7 +63,7 @@ enum NoneEncryptedCryptoRequestMethod {
 }
 
 enum StreamIsolateMethod {
-  moneroAccountTracker(CryptoKeyConst.moneroAccountTracker);
+  placeholder([]); // placeholder - no stream methods currently used
 
   final List<int> _tag;
   List<int> get tag => [...StreamCryptoArgsType.streamRequest.tag, ..._tag];
@@ -98,7 +91,6 @@ enum WalletRequestMethod {
   walletBackup(CryptoKeyConst.walletBackup),
   encodeBackup(CryptoKeyConst.encodeBackup),
   sign(CryptoKeyConst.sign),
-  moneroOutputUnlocker(CryptoKeyConst.moneroOutputUnlocker),
   importSubWallet(CryptoKeyConst.importSubWallet),
   removeSubWallet(CryptoKeyConst.removeSubWallet),
   changeWalletPassword(CryptoKeyConst.changeWalletPassword);
@@ -140,12 +132,6 @@ abstract class CryptoRequest<T, A extends CborMessageResponseArgs>
         args = TonMnemonicToPrivateKeyMessage.deserialize(object: decode);
       case CryptoRequestMethod.tonMnemonicValidate:
         args = TonMnemonicValidateMessage.deserialize(object: decode);
-        break;
-      case CryptoRequestMethod.generateMoneroMnemonic:
-        args = MoneroMenmonicGenerateMessage.deserialize(object: decode);
-        break;
-      case CryptoRequestMethod.moneroMnemonicToPrivateKey:
-        args = MoneroMnemonicToPrivateKeyMessage.deserialize(object: decode);
         break;
       case CryptoRequestMethod.generateMasterKey:
         args = CryptoRequestGenerateMasterKey.deserialize(object: decode);
@@ -240,9 +226,6 @@ abstract class WalletRequest<T, A extends CborMessageResponseArgs>
       case WalletRequestMethod.walletBackup:
         args = WalletRequestBackupWallet.deserialize(object: decode);
         break;
-      case WalletRequestMethod.moneroOutputUnlocker:
-        args = WalletRequestMoneroOutputUnlocker.deserialize(object: decode);
-        break;
       case WalletRequestMethod.importSubWallet:
         args = WalletRequestImportSubWallet.deserialize(object: decode);
         break;
@@ -274,21 +257,6 @@ abstract class NoneEncryptedCryptoRequest<T, A extends CborMessageResponseArgs>
     final request = NoneEncryptedCryptoRequestMethod.fromTag(decode.tags);
     final NoneEncryptedCryptoRequest args;
     switch (request) {
-      case NoneEncryptedCryptoRequestMethod.moneroFakeTx:
-        args = NoneEncryptedRequestFakeMoneroTx.deserialize(object: decode);
-        break;
-      case NoneEncryptedCryptoRequestMethod.generateRingOutput:
-        args =
-            NoneEncryptedRequestGenerateRingOutput.deserialize(object: decode);
-        break;
-      case NoneEncryptedCryptoRequestMethod.moneroGenerateProof:
-        args = NoneEncryptedRequestMoneroGenerateTxProof.deserialize(
-            object: decode);
-        break;
-      case NoneEncryptedCryptoRequestMethod.moneroVerifyProof:
-        args =
-            NoneEncryptedRequestMoneroVerifyTxProof.deserialize(object: decode);
-        break;
       case NoneEncryptedCryptoRequestMethod.hexToBytes:
         args = NoneEncryptedRequestHexToBytes.deserialize(object: decode);
         break;
@@ -323,16 +291,10 @@ abstract class IsolateStreamRequest<T, S>
     final CborTagValue decode =
         CborSerializable.decode(cborBytes: bytes, object: object);
     final request = StreamIsolateMethod.fromTag(decode.tags);
-    final IsolateStreamRequest args;
     switch (request) {
-      case StreamIsolateMethod.moneroAccountTracker:
-        args = StreamRequestMoneroBlockTracking.deserialize(object: decode);
-        break;
+      default:
+        throw AppCryptoExceptionConst.internalError("IsolateStreamRequest");
     }
-    if (args is! IsolateStreamRequest<T, S>) {
-      throw AppCryptoExceptionConst.internalError("IsolateStreamRequest");
-    }
-    return args;
   }
 
   void handleIsolateData(

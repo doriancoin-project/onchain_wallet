@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:on_chain_bridge/platform_interface.dart';
 import 'package:on_chain_wallet/app/core.dart';
+import 'package:on_chain_wallet/crypto/doriancoin/doriancoin.dart';
 import 'package:on_chain_wallet/future/future.dart';
 import 'package:on_chain_wallet/future/router/page_router.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
@@ -50,6 +51,7 @@ Future<APPSetting> _readSetting() async {
 Future<void> _runApplication() async {
   HttpOverrides.global = APPHTTPConfig();
   WidgetsFlutterBinding.ensureInitialized();
+  DoriancoinNetwork.register();
   final setting = await _readSetting();
   await _configDesktop(setting);
   ThemeController.fromAppSetting(setting);

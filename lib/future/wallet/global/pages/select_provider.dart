@@ -8,7 +8,7 @@ import 'package:on_chain_wallet/future/future.dart';
 import 'package:on_chain_wallet/future/router/page_router.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/aptos/provider/select_provider.dart';
+
 import 'package:on_chain_wallet/wallet/wallet.dart';
 
 class AccountManageProviderIcon extends StatelessWidget {
@@ -74,7 +74,6 @@ class SelectProviderView extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.wallet.wallet.currentChain;
     return switch (account.network.type) {
-      NetworkType.aptos => SelectAptosProviderView(account.cast()),
       _ => _SelectProviderView(chain: account)
     };
     // return;

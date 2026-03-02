@@ -28,8 +28,6 @@ class WebViewController
   WebViewController({required this.walletCore, required this.observer});
   String? _pageScript;
   String? _webviewWalletScript;
-  String? _tronScript;
-
   final bool enableBackForwardKey = PlatformInterface.isMacos;
 
   Future<String> _loadWebViewPageScript() async {
@@ -57,11 +55,6 @@ class WebViewController
     }
   }
 
-  Future<String> _loadTronWebScript() async {
-    _tronScript ??= await PlatformUtils.loadAssetText(APPConst.assetsTronWeb);
-    return _tronScript!;
-  }
-
   Future<String> _loadWebViewScript() async {
     if (kDebugMode) {
       if (PlatformInterface.appPlatform == AppPlatform.android) {
@@ -84,13 +77,7 @@ class WebViewController
   }
 
   Future<void> _runPageScripts(String viewId) async {
-    final tronWeb = await _loadTronWebScript();
     appLogger.debug(runtime: runtimeType, functionName: "_runPageScripts");
-    await _loadScript(viewType: viewId, script: tronWeb);
-    appLogger.debug(
-        runtime: runtimeType,
-        functionName: "_runPageScripts",
-        msg: "_loadScript");
     final script = await _loadWebViewPageScript();
     await _loadScript(viewType: viewId, script: script);
     appLogger.debug(

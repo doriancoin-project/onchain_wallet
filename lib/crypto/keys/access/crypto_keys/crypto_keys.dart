@@ -5,9 +5,6 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/crypto/coins/coins.dart';
 import 'package:on_chain_wallet/crypto/constant/tags.dart';
 import 'package:on_chain_wallet/crypto/utils/crypto/utils.dart';
-import 'package:ton_dart/ton_dart.dart';
-import 'package:xrpl_dart/xrpl_dart.dart';
-
 part 'core/key_data.dart';
 part 'models/ada_legacy_private_key.dart';
 part 'models/ada_legacy_public_key.dart';

@@ -1,5 +1,4 @@
 import 'package:bitcoin_base/bitcoin_base.dart';
-import 'package:blockchain_utils/utils/numbers/rational/big_rational.dart';
 import 'package:on_chain_wallet/app/utils/datetime/datetime.dart';
 import 'package:on_chain_wallet/wallet/api/client/networks/bitcoin/core/core.dart';
 import 'package:on_chain_wallet/wallet/api/provider/networks/bitcoin/bitcoin.dart';
@@ -7,8 +6,6 @@ import 'package:on_chain_wallet/wallet/api/services/service.dart';
 import 'package:on_chain_wallet/wallet/chain/account.dart';
 import 'package:on_chain_wallet/wallet/models/network/network.dart';
 import 'package:on_chain_wallet/wallet/models/transaction/core/transaction.dart';
-import 'package:on_chain_swap/on_chain_swap.dart';
-
 class BitcoinExplorerApiProvider extends BitcoinClient<IBitcoinAddress> {
   BitcoinExplorerApiProvider({required this.provider, required this.network});
   @override
@@ -47,12 +44,6 @@ class BitcoinExplorerApiProvider extends BitcoinClient<IBitcoinAddress> {
   @override
   Future<BtcTransaction> getTx(String txId) async {
     return await provider.getRawTransaction(txId);
-  }
-
-  @override
-  Future<BigRational> estimateFeePerByte(SwapBitcoinNetwork network) async {
-    final fee = await getFeeRate();
-    return BigRational(fee.medium) / BigRational.from(1024);
   }
 
   @override

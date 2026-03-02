@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monero_dart/monero_dart.dart';
+
 import 'package:on_chain_wallet/app/constant/constant.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/router/page_router.dart';
@@ -200,32 +200,6 @@ class TransactionModalView<CHAINACCOUNT extends ChainAccount,
                   ],
                 )),
         ConditionalWidget(
-          onActive: (context) {
-            final moneroAddress = (address as IMoneroAddress).networkAddress;
-            final moneroTx = transaction as MoneroWalletTransaction;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("proof".tr, style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    onRemoveIcon: Icon(Icons.handshake,
-                        color: context.onPrimaryContainer),
-                    onRemove: () {
-                      context.to(PageRouter.moneroGenerateProof,
-                          argruments:
-                              moneroTx.generateProofRequest(moneroAddress));
-                    },
-                    child: Text("tap_to_generate_transaction_proof".tr,
-                        style: context.onPrimaryTextTheme.bodyMedium)),
-              ],
-            );
-          },
-          enable: transaction.outputs.isEmpty &&
-              transaction.network == NetworkType.monero &&
-              transaction.type == WalletTransactionType.receive,
-        ),
-        ConditionalWidget(
             enable: transaction.outputs.isNotEmpty,
             onActive: (context) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,43 +324,9 @@ class TransactionTransferOutputView extends StatelessWidget {
               symbolColor: context.primaryContainer,
             ),
           ),
-          switch (output.runtimeType) {
-            const (MoneroWalletTransactionOutput) => _MoneroOutputView(
-                to: (output as MoneroWalletTransactionOutput).to,
-                transaction: transaction as MoneroWalletTransaction,
-              ),
-            _ => WidgetConstant.sizedBox
-          }
+          WidgetConstant.sizedBox
         ],
       ),
-    );
-  }
-}
-
-class _MoneroOutputView extends StatelessWidget {
-  const _MoneroOutputView({required this.to, required this.transaction});
-  final MoneroAddress to;
-  final MoneroWalletTransaction transaction;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        WidgetConstant.height20,
-        Text("proof".tr, style: context.onPrimaryTextTheme.titleMedium),
-        WidgetConstant.height8,
-        ContainerWithBorder(
-            backgroundColor: context.onPrimaryContainer,
-            onRemoveIcon:
-                Icon(Icons.handshake, color: context.primaryContainer),
-            onRemove: () {
-              context.to(PageRouter.moneroGenerateProof,
-                  argruments: transaction.generateProofRequest(to));
-            },
-            child: Text("tap_to_generate_transaction_proof".tr,
-                style: context.primaryTextTheme.bodyMedium)),
-      ],
     );
   }
 }

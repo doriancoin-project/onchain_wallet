@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:on_chain_wallet/app/core.dart';
-import 'package:on_chain_wallet/crypto/utils/ripple/ripple.dart';
+
 import 'package:on_chain_wallet/future/tools/secure_state/secure_state.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/address_details.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
@@ -11,8 +11,6 @@ import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/crypto/keys/keys.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
-import 'package:on_chain/sui/sui.dart';
-import 'package:on_chain/aptos/aptos.dart';
 
 class AccountPrivteKeyView extends StatelessWidget {
   const AccountPrivteKeyView({super.key});
@@ -105,20 +103,6 @@ class _AccountPrivateKeyViewState extends State<_AccountPrivateKeyView>
 
   PrivateKeysView toNetworkKeyFormat(PrivateKeysView key) {
     switch (network.type) {
-      case NetworkType.xrpl:
-        return key.copyWith(
-            inNetworkStyle: MethodUtils.nullOnException(() =>
-                RippleUtils.toRipplePrivateKey(key.privateKey, key.curve)));
-      case NetworkType.sui:
-        return key.copyWith(
-            inNetworkStyle: MethodUtils.nullOnException(() =>
-                SuiCryptoUtils.encodeSuiSecretKey(key.privateKeyBytes(),
-                    type: key.curve)));
-      case NetworkType.aptos:
-        return key.copyWith(
-            inNetworkStyle: MethodUtils.nullOnException(() =>
-                AptosCryptoUtils.encodeAptosPrivateKey(key.privateKeyBytes(),
-                    type: key.curve)));
       default:
         return key;
     }

@@ -8,19 +8,7 @@ import 'package:on_chain_wallet/wallet/chain/account.dart';
 import 'package:on_chain_wallet/wallet/constant/constant.dart';
 import 'package:on_chain_wallet/wallet/models/network/core/network/network.dart';
 import 'package:on_chain_wallet/wallet/models/token/token/token.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/ada.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/aptos.dart';
 import 'package:on_chain_wallet/wallet/models/transaction/networks/bitcoin.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/cosmos.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/ethereum.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/monero.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/solana.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/stellar.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/substrate.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/sui.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/ton.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/tron.dart';
-import 'package:on_chain_wallet/wallet/models/transaction/networks/xrp.dart';
 
 enum WalletTransactionType {
   send(0),
@@ -153,58 +141,10 @@ abstract class ChainTransaction with CborSerializable, Equality {
   static T deserialize<T extends ChainTransaction>(WalletNetwork network,
       {List<int>? bytes, String? cborHex, CborObject? object}) {
     final transaction = switch (network.type) {
-      NetworkType.cardano => ADAWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.aptos => AptosWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
       NetworkType.bitcoinAndForked ||
       NetworkType.bitcoinCash =>
         BitcoinWalletTransaction.deserialize(network.toNetwork(),
             bytes: bytes, cborHex: cborHex, object: object),
-      NetworkType.cosmos => CosmosWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.ethereum => EthWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.monero => MoneroWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.solana => SolanaWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.stellar => StellarWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.substrate => SubstrateWalletTransaction.deserialize(
-          network.toNetwork(),
-          bytes: bytes,
-          cborHex: cborHex,
-          object: object),
-      NetworkType.sui => SuiWalletTransaction.deserialize(network.toNetwork(),
-          bytes: bytes, cborHex: cborHex, object: object),
-      NetworkType.ton => TonWalletTransaction.deserialize(network.toNetwork(),
-          bytes: bytes, cborHex: cborHex, object: object),
-      NetworkType.tron => TronWalletTransaction.deserialize(network.toNetwork(),
-          bytes: bytes, cborHex: cborHex, object: object),
-      NetworkType.xrpl => XRPWalletTransaction.deserialize(network.toNetwork(),
-          bytes: bytes, cborHex: cborHex, object: object),
       _ => throw WalletExceptionConst.networkDoesNotExist,
     };
     if (transaction is! T) {

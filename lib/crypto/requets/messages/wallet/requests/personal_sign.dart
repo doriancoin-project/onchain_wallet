@@ -22,7 +22,7 @@ final class WalletRequestSignMessage
   factory WalletRequestSignMessage(
       {required List<int> message,
       required Bip32AddressIndex index,
-      NetworkType network = NetworkType.ethereum,
+      NetworkType network = NetworkType.bitcoinAndForked,
       int? payloadLength}) {
     return WalletRequestSignMessage._(
       message: message.asImmutableBytes,
@@ -66,22 +66,6 @@ final class WalletRequestSignMessage
       required NetworkType network,
       int? payloadLength}) {
     switch (network) {
-      case NetworkType.ethereum:
-        final responseKeys = wallet
-            .readKeys([AccessCryptoPrivateKeyRequest(index: index)])
-            .keys
-            .first;
-        final signer = ETHSigner.fromKeyBytes(responseKeys.privateKeyBytes());
-        return signer.signProsonalMessageConst(message,
-            payloadLength: payloadLength);
-      case NetworkType.tron:
-        final responseKeys = wallet
-            .readKeys([AccessCryptoPrivateKeyRequest(index: index)])
-            .keys
-            .first;
-        final signer = TronSigner.fromKeyBytes(responseKeys.privateKeyBytes());
-        return signer.signProsonalMessageConst(message,
-            payloadLength: payloadLength);
       default:
         throw WalletExceptionConst.unsuportedFeature;
     }

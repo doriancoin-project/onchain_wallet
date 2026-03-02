@@ -348,20 +348,10 @@ abstract class ChainConfig with CborSerializable, Equality {
   List get variabels => [];
   factory ChainConfig.deserialize(
       {List<int>? cborBytes, String? cborHex, CborObject? cborObject}) {
-    final CborTagValue tag = CborSerializable.decode(
-        cborBytes: cborBytes, hex: cborHex, object: cborObject);
-    final network = NetworkType.fromTag(tag.tags);
-    return switch (network) {
-      NetworkType.substrate =>
-        SubstrateChainConfig.deserialize(cborObject: tag),
-      _ => throw WalletExceptionConst.internalError("ChainConfig.deserialize")
-    };
+    throw WalletExceptionConst.internalError("ChainConfig.deserialize");
   }
   factory ChainConfig.create(NetworkType network) {
-    return switch (network) {
-      NetworkType.substrate => SubstrateChainConfig(),
-      _ => throw WalletExceptionConst.internalError("ChainConfig.deserialize")
-    };
+    throw WalletExceptionConst.internalError("ChainConfig.create");
   }
   T cast<T extends ChainConfig>() {
     if (this is! T) {

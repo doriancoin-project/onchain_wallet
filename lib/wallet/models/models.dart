@@ -8,5 +8,4 @@ export 'signing/signing.dart';
 export 'status/status.dart';
 export 'access/wallet_access.dart';
 export 'transaction/transaction.dart';
-export 'swap/swap.dart';
 export 'wallet/models.dart';

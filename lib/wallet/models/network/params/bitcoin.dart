@@ -2,6 +2,7 @@ import 'package:bitcoin_base/bitcoin_base.dart';
 import 'package:blockchain_utils/bip/bip.dart';
 import 'package:blockchain_utils/cbor/cbor.dart';
 import 'package:on_chain_wallet/app/serialization/serialization.dart';
+import 'package:on_chain_wallet/crypto/doriancoin/doriancoin.dart';
 import 'package:on_chain_wallet/wallet/constant/tags/constant.dart';
 import 'package:on_chain_wallet/wallet/models/network/core/params/params.dart';
 import 'package:on_chain_wallet/wallet/models/token/token/token.dart';
@@ -70,6 +71,7 @@ class BitcoinParams extends NetworkCoinParams {
       LitecoinNetwork.mainnet ||
       LitecoinNetwork.testnet =>
         150,
+      DoriancoinNetwork.mainnet || DoriancoinNetwork.testnet => 150,
       DashNetwork.testnet => 60,
       _ => 8 * 60
     };
@@ -81,7 +83,9 @@ class BitcoinParams extends NetworkCoinParams {
       BitcoinNetwork.testnet ||
       BitcoinNetwork.testnet4 ||
       LitecoinNetwork.mainnet ||
-      LitecoinNetwork.testnet =>
+      LitecoinNetwork.testnet ||
+      DoriancoinNetwork.mainnet ||
+      DoriancoinNetwork.testnet =>
         true,
       _ => false
     };

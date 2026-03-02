@@ -18,7 +18,6 @@ import 'package:on_chain_wallet/wallet/web3/web3.dart';
 import 'package:on_chain_wallet/wc/wallet/core/wallet.dart';
 
 part 'controller/manager.dart';
-part 'controller/networks/monero.dart';
 part 'controller/wallet_controller.dart';
 part 'controller/web3.dart';
 part 'core/core.dart';

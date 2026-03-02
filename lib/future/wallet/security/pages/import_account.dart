@@ -90,7 +90,7 @@ class _ImportAccountState extends State<_ImportAccount>
       GlobalKey(debugLabel: "_ImportAccountState_2");
 
   Map<_PrivateKeyTypes, Widget> keyTypes = {};
-  bool get inRipple => network.type == NetworkType.xrpl;
+  bool get inRipple => false;
   List<CryptoCoins> get coins => network.coins;
   CryptoCoins? coin;
   bool get needSelectCoins => coins.length > 1;

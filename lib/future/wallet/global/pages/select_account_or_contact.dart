@@ -51,7 +51,7 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
       GlobalKey(debugLabel: "SelectAddress");
   final GlobalKey<FormState> formKey = GlobalKey(debugLabel: "SelectAddress_1");
   late final WalletNetwork network = widget.account.network;
-  late final bool isRippleNetwork = network.type == NetworkType.xrpl;
+  late final bool isRippleNetwork = false;
   String _address = "";
   bool allowAddAddress = true;
   final StreamValue<ContactCore<NETWORKADDRESS>?> newContact =

@@ -10,10 +10,7 @@ class ChainStorageManager with BaseRepository {
     required String id,
     required this.networkType,
   })  : _id = id,
-        chainStorageIds = switch (networkType) {
-          NetworkType.monero => MoneroChainStorageId.values,
-          _ => DefaultChainStorageId.values,
-        };
+        chainStorageIds = DefaultChainStorageId.values;
   @override
   String get tableId {
     final id = _id;

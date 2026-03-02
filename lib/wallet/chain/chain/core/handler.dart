@@ -59,47 +59,11 @@ class ChainsHandler {
           final networkType = NetworkType.values[i];
           final chains = n.where((e) => e.network.type == networkType).toList();
           switch (networkType) {
-            case NetworkType.aptos:
-              return AptosNetworkController(
-                  networks: chains.cast(), id: wallet.key);
             case NetworkType.bitcoinAndForked:
               return BitcoinNetworkController(
                   networks: chains.cast(), id: wallet.key);
             case NetworkType.bitcoinCash:
               return BitcoinCashNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.ethereum:
-              return EthereumNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.xrpl:
-              return XRPNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.cardano:
-              return ADANetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.cosmos:
-              return CosmosNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.monero:
-              return MoneroNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.sui:
-              return SuiNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.solana:
-              return SolanaNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.stellar:
-              return StellarNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.substrate:
-              return SubstrateNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.tron:
-              return TronNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.ton:
-              return TonNetworkController(
                   networks: chains.cast(), id: wallet.key);
             default:
               throw WalletExceptionConst.networkDoesNotExist;

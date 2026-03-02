@@ -9,8 +9,6 @@ import 'package:on_chain_wallet/wallet/api/services/service.dart';
 import 'package:on_chain_wallet/wallet/chain/account.dart';
 import 'package:on_chain_wallet/wallet/models/network/network.dart';
 import 'package:on_chain_wallet/wallet/models/transaction/transaction.dart';
-import 'package:on_chain_swap/on_chain_swap.dart';
-
 class BitcoinElectrumClient extends BitcoinClient<IBitcoinAddress> {
   BitcoinElectrumClient({required this.provider, required this.network});
   @override
@@ -70,18 +68,6 @@ class BitcoinElectrumClient extends BitcoinClient<IBitcoinAddress> {
   @override
   Future<BtcTransaction> getTx(String txId) async {
     return await provider.request(ElectrumRequestGetRawTransaction(txId));
-  }
-
-  @override
-  Future<BigRational> estimateFeePerByte(SwapBitcoinNetwork network) async {
-    final fee = await getFeeRate();
-    if (fee == null) {
-      if (!network.chainType.isMainnet) {
-        return BigRational.parseDecimal('1.1');
-      }
-      throw ApiProviderExceptionConst.serverUnexpectedResponse;
-    }
-    return BigRational(fee.medium) / BigRational.from(1024);
   }
 
   Future<ElectrumHeaderSubscribeResponse> getBlock() async {

@@ -4,19 +4,7 @@ import 'package:on_chain_wallet/app/http/models/auth.dart';
 import 'package:on_chain_wallet/app/serialization/cbor/cbor.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/wallet/api/constant/constant.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/aptos.dart';
 import 'package:on_chain_wallet/wallet/api/provider/networks/bitcoin/providers/provider.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/cardano.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/cosmos.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/ethereum.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/monero.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/ripple.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/solana.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/stellar.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/substrate.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/sui.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/ton.dart';
-import 'package:on_chain_wallet/wallet/api/provider/networks/tron.dart';
 import 'package:on_chain_wallet/wallet/api/services/models/models.dart';
 import 'package:on_chain_wallet/wallet/models/network/network.dart';
 
@@ -48,36 +36,10 @@ abstract class APIProvider with Equality, CborSerializable {
   factory APIProvider.deserialize(WalletNetwork network,
       {List<int>? bytes, CborObject? obj}) {
     switch (network.type) {
-      case NetworkType.ethereum:
-        return EthereumAPIProvider.fromCborBytesOrObject(
-            obj: obj, bytes: bytes);
-      case NetworkType.tron:
-        return TronAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.solana:
-        return SolanaAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
       case NetworkType.bitcoinAndForked:
       case NetworkType.bitcoinCash:
         return BaseBitcoinAPIProvider.fromCborBytesOrObject(
             obj: obj, bytes: bytes);
-      case NetworkType.cardano:
-        return CardanoAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.cosmos:
-        return CosmosAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.xrpl:
-        return RippleAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.ton:
-        return TonAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.monero:
-        return MoneroAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.substrate:
-        return SubstrateAPIProvider.fromCborBytesOrObject(
-            obj: obj, bytes: bytes);
-      case NetworkType.stellar:
-        return StellarAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.aptos:
-        return AptosAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
-      case NetworkType.sui:
-        return SuiAPIProvider.fromCborBytesOrObject(obj: obj, bytes: bytes);
       default:
         throw AppExceptionConst.internalError(
             "APIProvider.fromCborBytesOrObject");
@@ -93,10 +55,7 @@ abstract class ProviderIdentifier with Equality, CborSerializable {
     final CborTagValue tag =
         CborSerializable.decode(cborBytes: bytes, hex: hex, object: cbor);
     final network = NetworkType.fromTag(tag.tags);
-    return switch (network) {
-      NetworkType.aptos => AptosProviderIdentifier.deserialize(cbor: tag),
-      _ => DefaultProviderIdentifier.deserialize(cbor: tag)
-    };
+    return DefaultProviderIdentifier.deserialize(cbor: tag);
   }
   T cast<T extends ProviderIdentifier>() {
     if (this is! T) {
@@ -116,8 +75,6 @@ class DefaultProviderIdentifier extends ProviderIdentifier {
     required String identifier,
     required NetworkType network,
   }) {
-    assert(
-        network != NetworkType.aptos, "Invalid provider identifier network.");
     return DefaultProviderIdentifier._(
         network: network, identifier: identifier);
   }

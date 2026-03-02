@@ -4,7 +4,7 @@ import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/state_managment/extension/extension.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/global/global.dart';
-import 'package:on_chain_wallet/future/wallet/network/network.dart';
+
 import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
 import 'package:on_chain_wallet/wallet/wallet.dart';
 
@@ -108,7 +108,6 @@ class _AppbarPageAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (chain.network.type) {
-      NetworkType.monero => MoneroAppBarActionView(chain.cast()),
       _ => WidgetConstant.sizedBox
     };
   }

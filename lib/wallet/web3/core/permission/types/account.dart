@@ -6,20 +6,8 @@ import 'package:on_chain_wallet/crypto/keys/access/crypto_keys/crypto_keys.dart'
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/wallet/wallet.dart';
 import 'package:on_chain_wallet/wallet/web3/constant/constant/exception.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/aptos/permission/models/account.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin/bitcoin.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin_cash/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/cardano/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/cosmos/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ethereum/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/monero/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ripple/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/solana/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/stellar/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/substrate/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/sui/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ton/permission/models/account.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/tron/permission/models/account.dart';
 
 abstract class Web3ChainAccount<NETWORKADDRESS>
     with CborSerializable, Equality {
@@ -105,24 +93,6 @@ abstract class Web3ChainAuthenticated<CHAINACCOUNT extends Web3ChainAccount>
         CborSerializable.decode(object: object, cborBytes: bytes, hex: hex);
     final type = NetworkType.fromTag(tag.tags);
     return switch (type) {
-      NetworkType.solana =>
-        Web3SolanaChainAuthenticated.deserialize(object: tag),
-      NetworkType.xrpl => Web3XRPChainAuthenticated.deserialize(object: tag),
-      NetworkType.monero =>
-        Web3MoneroChainAuthenticated.deserialize(object: tag),
-      NetworkType.cardano => Web3ADAChainAuthenticated.deserialize(object: tag),
-      NetworkType.ethereum =>
-        Web3EthereumChainAuthenticated.deserialize(object: tag),
-      NetworkType.ton => Web3TonChainAuthenticated.deserialize(object: tag),
-      NetworkType.tron => Web3TronChainAuthenticated.deserialize(object: tag),
-      NetworkType.stellar =>
-        Web3StellarChainAuthenticated.deserialize(object: tag),
-      NetworkType.substrate =>
-        Web3SubstrateChainAuthenticated.deserialize(object: tag),
-      NetworkType.aptos => Web3AptosChainAuthenticated.deserialize(object: tag),
-      NetworkType.sui => Web3SuiChainAuthenticated.deserialize(object: tag),
-      NetworkType.cosmos =>
-        Web3CosmosChainAuthenticated.deserialize(object: tag),
       NetworkType.bitcoinAndForked =>
         Web3BitcoinChainAuthenticated.deserialize(object: tag),
       NetworkType.bitcoinCash =>

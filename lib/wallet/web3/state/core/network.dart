@@ -376,11 +376,6 @@ abstract class Web3StateHandler<
           return connetInternal(networks: [chain.id]);
         }
         switch (networkType) {
-          case NetworkType.aptos:
-            if (chain != state.defaultChain) {
-              return connetInternal(networks: [chain.id]);
-            }
-            break;
           default:
         }
         return createResponse();

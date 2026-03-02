@@ -6,20 +6,8 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/aptos/web3/permission/web3_permission.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/web3/permission/btcoin_cash_permission.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/cardano/web3/permission/permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/cosmos/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/ethereum/web3/permission/permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/monero/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/ripple/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/solana/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/stellar/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/substrate/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/sui/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/ton/web3/permission/web3_permission.dart';
-import 'package:on_chain_wallet/future/wallet/network/tron/web3/permission/web3_permission.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 import 'package:on_chain_wallet/future/wallet/web3/pages/client_info.dart';
 import 'package:on_chain_wallet/future/wallet/web3/types/types.dart';
@@ -408,42 +396,6 @@ class __Web3APPPermissionViewState extends State<_Web3ApplicationPermissionView>
                                 image: APPConst.bch,
                                 disabled:
                                     chainDisabled(NetworkType.bitcoinCash)),
-                            _NavigationRailDestination(
-                                image: APPConst.xrp,
-                                disabled: chainDisabled(NetworkType.xrpl)),
-                            _NavigationRailDestination(
-                                image: APPConst.eth,
-                                disabled: chainDisabled(NetworkType.ethereum)),
-                            _NavigationRailDestination(
-                                image: APPConst.trx,
-                                disabled: chainDisabled(NetworkType.tron)),
-                            _NavigationRailDestination(
-                                image: APPConst.sol,
-                                disabled: chainDisabled(NetworkType.solana)),
-                            _NavigationRailDestination(
-                                image: APPConst.ada,
-                                disabled: chainDisabled(NetworkType.cardano)),
-                            _NavigationRailDestination(
-                                image: APPConst.ton,
-                                disabled: chainDisabled(NetworkType.ton)),
-                            _NavigationRailDestination(
-                                image: APPConst.atom,
-                                disabled: chainDisabled(NetworkType.cosmos)),
-                            _NavigationRailDestination(
-                                image: APPConst.polkadot,
-                                disabled: chainDisabled(NetworkType.substrate)),
-                            _NavigationRailDestination(
-                                image: APPConst.stellar,
-                                disabled: chainDisabled(NetworkType.stellar)),
-                            _NavigationRailDestination(
-                                image: APPConst.monero,
-                                disabled: chainDisabled(NetworkType.monero)),
-                            _NavigationRailDestination(
-                                image: APPConst.aptos,
-                                disabled: chainDisabled(NetworkType.aptos)),
-                            _NavigationRailDestination(
-                                image: APPConst.sui,
-                                disabled: chainDisabled(NetworkType.sui)),
                           ],
                           selectedIndex: _selectedIndex,
                         ),
@@ -495,7 +447,6 @@ class _APPPermissionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final application = state.application;
     int tabbarLength = switch (state.chainType) {
-      NetworkType.cardano => 3,
       _ => 2,
     };
     return DefaultTabController(
@@ -515,30 +466,6 @@ class _APPPermissionWidget extends StatelessWidget {
                   key: state.permissionState[1], application: application),
               2: (context) => BitcoinCashWeb3PermissionView(
                   key: state.permissionState[2], application: application),
-              3: (context) => RippleWeb3PermissionView(
-                  key: state.permissionState[3], application: application),
-              4: (context) => EthereumWeb3PermissionView(
-                  key: state.permissionState[4], application: application),
-              5: (context) => TronWeb3PermissionView(
-                  key: state.permissionState[5], application: application),
-              6: (context) => SolanaWeb3PermissionView(
-                  key: state.permissionState[6], application: application),
-              7: (context) => CardanoWeb3PermissionView(
-                  key: state.permissionState[7], application: application),
-              8: (context) => TonWeb3PermissionView(
-                  key: state.permissionState[8], application: application),
-              9: (context) => CosmosWeb3PermissionView(
-                  key: state.permissionState[9], application: application),
-              10: (context) => SubstrateWeb3PermissionView(
-                  key: state.permissionState[10], application: application),
-              11: (context) => StellarWeb3PermissionView(
-                  key: state.permissionState[11], application: application),
-              12: (context) => MoneroWeb3PermissionView(
-                  key: state.permissionState[12], application: application),
-              13: (context) => AptosWeb3PermissionView(
-                  key: state.permissionState[13], application: application),
-              14: (context) => SuiWeb3PermissionView(
-                  key: state.permissionState[14], application: application),
             },
           ),
           WidgetConstant.sliverPaddingVertial40,

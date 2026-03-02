@@ -61,12 +61,6 @@ class _NetworkGenericAddressDerivationViewState
   static NewAccountParams getnerateAccoutParams(
       Bip32AddressIndex keyIndex, WalletNetwork network, CryptoCoins coin) {
     switch (network.type) {
-      case NetworkType.ethereum:
-        return EthereumNewAddressParams(deriveIndex: keyIndex, coin: coin);
-      case NetworkType.solana:
-        return SolanaNewAddressParams(deriveIndex: keyIndex, coin: coin);
-      case NetworkType.tron:
-        return TronNewAddressParams(deriveIndex: keyIndex, coin: coin);
       default:
         throw UnimplementedError();
     }
@@ -87,7 +81,6 @@ class _NetworkGenericAddressDerivationViewState
     switch (type) {
       case NetworkType.bitcoinAndForked:
       case NetworkType.bitcoinCash:
-      case NetworkType.cardano:
         networkPage = type;
         break;
       default:
@@ -110,21 +103,7 @@ class _NetworkGenericAddressDerivationViewState
     switch (type) {
       case NetworkType.bitcoinAndForked:
       case NetworkType.bitcoinCash:
-      case NetworkType.cardano:
-      case NetworkType.sui:
-      case NetworkType.aptos:
         enableMultisig = supportMultisig && true;
-        break;
-      case NetworkType.substrate:
-        final network =
-            widget.chain.network.toNetwork<WalletSubstrateNetwork>();
-        supportMultisig = !network.coinParam.substrateChainType.isEthereum;
-        enableMultisig = supportMultisig && widget.chain.haveAddress;
-        break;
-      case NetworkType.ethereum:
-      case NetworkType.solana:
-      case NetworkType.tron:
-        isSimpleDerivation = true;
         break;
       default:
         break;
@@ -140,8 +119,6 @@ class _NetworkGenericAddressDerivationViewState
           SetupBitcoinAddressView(widget.chain.cast()),
       NetworkType.bitcoinCash: (context) =>
           SetupBitcoinAddressView(widget.chain.cast()),
-      NetworkType.cardano: (context) =>
-          SetupCardanoAddressView(widget.chain.cast()),
       null: (context) => StateBuilder<AddressDerivationController>(
             controller: () => AddressDerivationController(
                 chain: widget.chain, wallet: wallet),
@@ -179,10 +156,7 @@ class _NetworkGenericAddressDerivationViewState
                                         "please_following_steps_to_generate_address"
                                             .tr,
                                         "custom_path_derivation_desc".tr,
-                                        if (controller.network.type ==
-                                            NetworkType.ton)
-                                          "ton_mnemonic_feature_desc".tr
-                                      ],
+                                        ],
                                     )),
                                 AppListTile(
                                   title: Text("generate_address".tr),

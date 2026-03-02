@@ -3,19 +3,7 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/controller/tabs/tabs.dart';
 import 'package:on_chain_wallet/future/wallet/global/global.dart';
-import 'package:on_chain_wallet/future/wallet/network/aptos/account/account.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/cardano/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/cosmos/cosmos.dart';
-import 'package:on_chain_wallet/future/wallet/network/ethereum/account/pages/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/monero/monero.dart';
-import 'package:on_chain_wallet/future/wallet/network/ripple/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/solana/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/stellar/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/substrate/substrate.dart';
-import 'package:on_chain_wallet/future/wallet/network/sui/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/ton/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/tron/account/account.dart';
 import 'package:on_chain_wallet/future/wallet/start/pages/drawer_view.dart';
 import 'package:on_chain_wallet/future/wallet/start/pages/platform_widgets/widgets.dart';
 import 'package:on_chain_wallet/future/wallet/swap/pages/pages/swap.dart';
@@ -184,30 +172,6 @@ class _AccountPageView extends StatelessWidget {
       case NetworkType.bitcoinAndForked:
       case NetworkType.bitcoinCash:
         return BitcoinAccountPageView(chainAccount: account.cast());
-      case NetworkType.xrpl:
-        return RippleAccountPageView(account: account.cast());
-      case NetworkType.solana:
-        return SolanaAccountPageView(chainAccount: account.cast());
-      case NetworkType.monero:
-        return MoneroAccountPageView(chainAccount: account.cast());
-      case NetworkType.stellar:
-        return StellarAccountPageView(chainAccount: account.cast());
-      case NetworkType.ethereum:
-        return ETHAccountPageView(chainAccount: account.cast());
-      case NetworkType.tron:
-        return TronAccountPageView(chainAccount: account.cast());
-      case NetworkType.cardano:
-        return CardanoAccountPageView(chainAccount: account.cast());
-      case NetworkType.ton:
-        return TonAccountPageView(account: account.cast());
-      case NetworkType.substrate:
-        return SubstrateAccountPageView(chainAccount: account.cast());
-      case NetworkType.cosmos:
-        return CosmosAccountPageView(chainAccount: account.cast());
-      case NetworkType.sui:
-        return SuiAccountPageView(chainAccount: account.cast());
-      case NetworkType.aptos:
-        return AptosAccountPageView(chainAccount: account.cast());
       default:
         return const TabBarView(
             physics: WidgetConstant.noScrollPhysics, children: []);

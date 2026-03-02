@@ -1,3 +1,1 @@
-export 'services/ethereum.dart';
-export 'services/ripple.dart';
-export 'services/substrate.dart';
+// No websocket services needed for Doriancoin-only wallet.

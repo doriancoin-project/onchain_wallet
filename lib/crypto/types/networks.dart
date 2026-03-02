@@ -110,18 +110,6 @@ class NetworkType {
   static const List<NetworkType> values = [
     bitcoinAndForked,
     bitcoinCash,
-    xrpl,
-    ethereum,
-    tron,
-    solana,
-    cardano,
-    ton,
-    cosmos,
-    substrate,
-    stellar,
-    monero,
-    aptos,
-    sui
   ];
 
   static NetworkType fromValue(int? value) {

@@ -37,7 +37,7 @@ abstract class _WalletController with CryptoWokerImpl {
 }
 
 class WalletController extends _WalletController
-    with WalletManager, Web3Impl, WalletMoneroImpl {
+    with WalletManager, Web3Impl {
   WalletController._(WalletCore super.core, super.chains);
 
   /// setup wallet.

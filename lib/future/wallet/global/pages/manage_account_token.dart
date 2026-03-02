@@ -6,7 +6,7 @@ import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/future.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/substrate/tokens/tokens.dart';
+
 import 'package:on_chain_wallet/wallet/api/client/core/client.dart';
 import 'package:on_chain_wallet/wallet/chain/account.dart';
 import 'package:on_chain_wallet/wallet/models/nfts/core/core.dart';
@@ -27,11 +27,6 @@ class _ManageAccountTokenViewState extends State<ManageAccountTokenView> {
     return NetworkAccountControllerView<NetworkClient, ChainAccount, Chain>(
         childBulder: (wallet, account, client, address, onAccountChanged) {
           switch (account.network.type) {
-            case NetworkType.substrate:
-              return ManageSubstrateAccountToken(
-                  account: account.cast(),
-                  address: address.cast(),
-                  client: client.cast());
             default:
               return _ManageAccountToken(
                   account: account, client: client, address: address);

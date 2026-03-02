@@ -9,7 +9,6 @@ export 'requests/typed_data.dart';
 export 'requests/update_wallet_keys.dart';
 export 'requests/wallet_remove_key.dart';
 export 'requests/wallet_backup.dart';
-export 'requests/monero_output_unlocker.dart';
 export 'requests/bitcoin_personal_sign.dart';
 export 'requests/update_sub_wallet.dart';
 export 'requests/remove_sub_wallet.dart';

@@ -15,20 +15,8 @@ import 'package:on_chain_wallet/wallet/web3/networks/global/methods/methods.dart
 import 'package:on_chain_wallet/wallet/web3/networks/global/params/connect.dart';
 import 'package:on_chain_wallet/wallet/web3/utils/web3_validator_utils.dart';
 import 'package:on_chain_wallet/wc/wallet/core/network.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/ada.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/aptos.dart';
 import 'package:on_chain_wallet/wc/wallet/networks/bitcoin.dart';
 import 'package:on_chain_wallet/wc/wallet/networks/bitcoin_cash.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/cosmos.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/ethereum.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/monero.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/solana.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/stellar.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/substrate.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/sui.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/ton.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/tron.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/xrp.dart';
 import 'package:on_chain_wallet/wc/wallet/types/types.dart';
 import 'package:on_chain_wallet/wc/core/types/types.dart';
 
@@ -50,34 +38,10 @@ class Web3WalletConnectSessionHandler extends Web3WalletHandler<
       required SessionData session})
       : _session = session;
   late final Map<NetworkType, Web3WalletConnectStateHandler> _networks = {
-    NetworkType.ethereum: EthereumWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.tron: TronWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.solana: SolanaWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.ton: TonWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.stellar: StellarWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.substrate: SubstrateWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.aptos: AptosWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.sui: SuiWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.cosmos: CosmosWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
     NetworkType.bitcoinAndForked: BitcoinWeb3WalletConnectStateHandler(
         sendInternalMessage: _sendInternalWalletMessage),
     NetworkType.bitcoinCash: BitcoinCashWeb3WalletConnectStateHandler(
         sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.xrpl: XRPWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.monero: MoneroWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.cardano: ADAWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage)
   };
 
   Future<(List<WalletConnectAddress>, List<String>)> _getWalletChange() async {

@@ -3,8 +3,6 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/crypto/keys/keys.dart';
 import 'package:on_chain_wallet/crypto/requets/argruments/argruments.dart';
 import 'package:on_chain_wallet/crypto/requets/messages/core/message.dart';
-import 'package:on_chain/solidity/abi/abi.dart';
-
 final class WalletRequestEthereumTypedDataSign
     extends WalletRequest<String, MessageArgsOneBytes> {
   final EIP712Base message;

@@ -6,20 +6,7 @@ import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/router/page_router.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/extension.dart';
-import 'package:on_chain_wallet/future/wallet/network/aptos/transaction/operations/transfer.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/cardano/account/account.dart';
-import 'package:on_chain_wallet/future/wallet/network/cardano/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/cosmos/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/ethereum/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/monero/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/ripple/transaction/operations/transfer/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/solana/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/stellar/transaction/controllers/controller.dart';
-import 'package:on_chain_wallet/future/wallet/network/substrate/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/sui/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/ton/transaction/operations/transfer.dart';
-import 'package:on_chain_wallet/future/wallet/network/tron/transaction/operations/transfer/transfer.dart';
 import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
 import 'package:on_chain_wallet/wallet/wallet.dart';
 import 'package:on_chain_wallet/future/state_managment/extension/extension.dart';
@@ -131,60 +118,12 @@ class _AccountButtons extends StatelessWidget {
             onPressed: () {
               final wallet = context.wallet;
               final operation = switch (account.network.type) {
-                NetworkType.aptos => AptosTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<AptosChain>(),
-                    address: account.cast<AptosChain>().address),
                 NetworkType.bitcoinCash ||
                 NetworkType.bitcoinAndForked =>
                   BitcoinTransactionTransferOperation(
                       walletProvider: wallet,
                       account: account.cast<BitcoinChain>(),
                       address: account.cast<BitcoinChain>().address),
-                NetworkType.ethereum => EthereumTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<EthereumChain>(),
-                    address: account.cast<EthereumChain>().address),
-                NetworkType.xrpl => RippleTransactionPaymentOperation(
-                    walletProvider: wallet,
-                    account: account.cast<XRPChain>(),
-                    address: account.cast<XRPChain>().address),
-                NetworkType.cardano => ADATransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<ADAChain>(),
-                    address: account.cast<ADAChain>().address),
-                NetworkType.cosmos => CosmosTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<CosmosChain>(),
-                    address: account.cast<CosmosChain>().address),
-                NetworkType.monero => MoneroTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<MoneroChain>(),
-                    address: account.cast<MoneroChain>().address),
-                NetworkType.solana => SolanaTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<SolanaChain>(),
-                    address: account.cast<SolanaChain>().address),
-                NetworkType.stellar => StellarTransactionStateController(
-                    walletProvider: wallet,
-                    account: account.cast<StellarChain>(),
-                    address: account.cast<StellarChain>().address),
-                NetworkType.substrate => SubstrateTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<SubstrateChain>(),
-                    address: account.cast<SubstrateChain>().address),
-                NetworkType.ton => TonTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<TonChain>(),
-                    address: account.cast<TonChain>().address),
-                NetworkType.tron => TronTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<TronChain>(),
-                    address: account.cast<TronChain>().address),
-                NetworkType.sui => SuiTransactionTransferOperation(
-                    walletProvider: wallet,
-                    account: account.cast<SuiChain>(),
-                    address: account.cast<SuiChain>().address),
                 _ => null
               };
               context.to(PageRouter.transaction, argruments: operation);
@@ -468,8 +407,6 @@ List<PopupMenuItem<int>> _chainCustomButton(
     required BuildContext context,
     required int value}) {
   return switch (account.network.type) {
-    NetworkType.cardano => cardanoAccountMenuButton(
-        account: account.cast(), context: context, value: value),
     _ => []
   };
 }

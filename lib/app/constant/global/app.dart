@@ -1,66 +1,18 @@
-import 'package:on_chain_wallet/app/models/models/asset.dart';
 import 'package:on_chain_wallet/app/models/models/image.dart';
 
 class APPConst {
-  static const String assetErc20Abi = "assets/solidity/erc20.json";
-  static const String assetErc721Abi = "assets/solidity/erc721.json";
-  static const String assetErc1155Abi = "assets/solidity/erc1155.json";
-  static const APPAssetUri cosmosChains =
-      APPAssetUri(url: "assets/chains.json", package: 'cosmos_sdk');
   static const String assetWebviewScript = "assets/webview/script.js";
   static const String logoPath = "assets/image/wallet.png";
   static const String assetWebviewPageScript = "assets/webview/script_page.js";
-  static const String assetsTronWeb = "assets/webview/tron_web.js";
-  static const String bnJs = "assets/webview/bn.js";
   static final APPImage logo = APPImage.local("assets/image/wallet.png");
   static final APPImage wc = APPImage.local("assets/image/wc.png");
   static final APPImage telegramLogo = APPImage.local("assets/image/t.png");
   static final APPImage githubLogo = APPImage.local("assets/image/g.png");
+  static final APPImage dsv = APPImage.local("assets/image/dsv.png");
   static final APPImage ltc = APPImage.local("assets/image/ltc.png");
   static final APPImage bch = APPImage.local("assets/image/bch.png");
   static final APPImage btc = APPImage.local("assets/image/btc.png");
-  static final APPImage doge = APPImage.local("assets/image/doge.png");
-  static final APPImage pepecoin = APPImage.local("assets/image/pepecoin.png");
-  static final APPImage bsv = APPImage.local("assets/image/bsv.png");
-  static final APPImage dash = APPImage.local("assets/image/dash.png");
-  static final APPImage xrp = APPImage.local("assets/image/xrp.png");
-  static final APPImage eth = APPImage.local("assets/image/eth.png");
-  static final APPImage matic = APPImage.local("assets/image/matic.png");
-  static final APPImage bnb = APPImage.local("assets/image/bnb.png");
-  static final APPImage trx = APPImage.local("assets/image/trx.png");
-  static final APPImage sol = APPImage.local("assets/image/sol.png");
-  static final APPImage ada = APPImage.local("assets/image/ada.png");
-  static final APPImage atom = APPImage.local("assets/image/atom.png");
-  static final APPImage cacao = APPImage.local("assets/image/cacao.png");
-  static final APPImage avalance = APPImage.local("assets/image/avax.png");
-  static final APPImage arbitrum = APPImage.local("assets/image/arb.png");
-  static final APPImage base = APPImage.local("assets/image/base.png");
-  static final APPImage optimistic = APPImage.local("assets/image/op.png");
-
-  static final APPImage thor = APPImage.local("assets/image/thor.png");
-  static final APPImage kujira = APPImage.local("assets/image/kujira.png");
-  static final APPImage osmo = APPImage.local("assets/image/osmo.png");
-  static final APPImage ton = APPImage.local("assets/image/ton.png");
-  static final APPImage polkadot = APPImage.local("assets/image/polkadot.png");
-  static final APPImage substrate =
-      APPImage.local("assets/image/substrate.png");
-  static final APPImage moonbeam = APPImage.local("assets/image/moonbeam.png");
-  static final APPImage moonriver =
-      APPImage.local("assets/image/moonriver.png");
-  static final APPImage astar = APPImage.local("assets/image/astar.png");
-  static final APPImage hydration =
-      APPImage.local("assets/image/hydration.png");
-  static final APPImage bifrost = APPImage.local("assets/image/bifrost.png");
-  static final APPImage cf = APPImage.local("assets/image/cf.png");
-  static final APPImage centrifuge = APPImage.local("assets/image/cfg.png");
-  static final APPImage acala = APPImage.local("assets/image/acala.png");
-
-  static final APPImage kusama = APPImage.local("assets/image/ksm.png");
-  static final APPImage stellar = APPImage.local("assets/image/xlm.png");
-  static final APPImage monero = APPImage.local("assets/image/monero.png");
-  static final APPImage aptos = APPImage.local("assets/image/aptos.png");
-  static final APPImage sui = APPImage.local("assets/image/sui.png");
-  static const String name = "OnChain";
+  static const String name = "Doriancoin Wallet";
   static const String applicationId = "com.mrtnetwork.on_chain_wallet";
   static const String authenticateReason = "Authenticate to proceed";
   static const Duration animationDuraion = Duration(milliseconds: 400);

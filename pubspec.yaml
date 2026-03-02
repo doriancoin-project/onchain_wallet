@@ -1,5 +1,5 @@
 name: on_chain_wallet
-description: Open-source decentralized wallet for the future of finance. Securely manage assets, support for Bitcoin, Dogecoin, Ripple, Litecoin, Dash, Ethereum, Tron, Ton, Cosmos, Kusama, and Polkadot witch cross platform Android, Windows, web and macos.
+description: Doriancoin Wallet - A dedicated wallet for the Doriancoin (DSV) cryptocurrency.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -18,21 +18,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 version: 0.7.0+2
 
-homepage: "https://github.com/mrtnetwork/onchain_wallet"
-repository: "https://github.com/mrtnetwork/onchain_wallet"
-Author: mrhaydari.t@gmail.com
+homepage: "https://github.com/doriancoin-project/onchain_wallet"
+repository: "https://github.com/doriancoin-project/onchain_wallet"
 topics:
+  - doriancoin
   - bitcoin
-  - xrp
-  - tron
-  - ethereum
-  - ton
-  - cardano
-  - cosmos
-  - substrate
-  - sui
-  - aptos
-  - monero
   - wallet
 
 
@@ -55,14 +45,6 @@ dependencies:
   blockchain_utils: ^5.4.0
   # blockchain_utils:
   #   path: ../blockchain_utils
-  cosmos_sdk: ^3.0.0
-  # cosmos_sdk:
-  #   path: ../cosmos_sdk
-  on_chain_swap:
-    # path: ../onchain_swap
-    git:
-      url: https://github.com/mrtnetwork/onchain_swap.git
-      ref: main 
   on_chain_bridge:
     # path: ../onchain_bridge
     git:
@@ -71,24 +53,6 @@ dependencies:
   bitcoin_base: ^7.0.0
   # bitcoin_base:
   #   path: ../bitcoin_base
-  xrpl_dart: ^7.3.0
-  # xrpl_dart:
-  #   path: ../xrpl_dart
-  on_chain: ^7.1.0
-  # on_chain:
-  #   path: ../On_chain
-  ton_dart: ^2.1.0
-  # ton_dart:
-  #   path: ../ton_dart
-  polkadot_dart: ^5.1.0
-  # polkadot_dart:
-  #   path: ../polkadot_dart
-  stellar_dart: ^2.1.0
-  # stellar_dart:
-  #   path: ../stellar_dart
-  monero_dart: ^1.5.0
-  # monero_dart:
-  #   path: ../monero_dart
   
   cupertino_icons: ^1.0.2
   
@@ -123,7 +87,6 @@ flutter:
     - assets/image/
     - assets/fonts/
     - assets/wasm/
-    - assets/solidity/
     - assets/webview/
 
   # An image asset can refer to one or more resolution-specific "variants", see

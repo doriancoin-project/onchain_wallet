@@ -381,16 +381,6 @@ abstract class WalletCore extends _WalletCore with WalletsManager {
     });
   }
 
-  Future<MethodResult<List<MoneroUnlockedPaymentRequestDetails>>>
-      moneroUpdatePendingTxes(
-          {required MoneroChain account,
-          List<MoneroAccountPendingTxes>? txIds}) async {
-    return await _callSynchronized(() async {
-      return await _controller._moneroUpdatePendingTxes(
-          account: account, txIds: txIds);
-    }, action: () => WalletActionEventType.moneroAction);
-  }
-
   Future<List<EncryptedCustomKey>> getCustomKeysForCoin(
       CryptoCoins coin) async {
     if (!isOpen) return const [];

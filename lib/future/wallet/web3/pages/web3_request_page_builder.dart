@@ -3,19 +3,7 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/address_details.dart';
-import 'package:on_chain_wallet/future/wallet/network/aptos/web3/types/types.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/cardano/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/cosmos/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/ethereum/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/monero/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/ripple/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/solana/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/stellar/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/substrate/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/sui/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/ton/web3/types/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/tron/web3/types/types.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 import 'package:on_chain_wallet/future/wallet/web3/core/state.dart';
 import 'package:on_chain_wallet/future/wallet/web3/pages/appbar_action.dart';
@@ -45,30 +33,6 @@ class _Web3StatePageBuilderState extends State<Web3StatePageBuilder>
       NetworkType.bitcoinCash =>
         Web3BitcoinStateController.findController(
             request: request, walletProvider: context.wallet),
-      NetworkType.aptos => Web3AptosStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.cosmos => Web3CosmosStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.ethereum => Web3EthereumStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.solana => Web3SolanaStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.stellar => Web3StellarStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.substrate => Web3SubstrateStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.sui => Web3SuiStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.ton => Web3TonStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.tron => Web3TronStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.xrpl => Web3XRPStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.monero => Web3MoneroStateController.findController(
-          request: request, walletProvider: context.wallet),
-      NetworkType.cardano => Web3CardanoStateController.findController(
-          request: request, walletProvider: context.wallet),
       _ => throw UnimplementedError()
     };
     controller.init();

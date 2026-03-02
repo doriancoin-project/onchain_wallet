@@ -114,33 +114,9 @@ abstract final class Chain<
   }
   static Chain setup({required WalletNetwork network, required String id}) {
     switch (network.type) {
-      case NetworkType.ethereum:
-        return EthereumChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.tron:
-        return TronChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.xrpl:
-        return XRPChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.solana:
-        return SolanaChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.stellar:
-        return StellarChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.cardano:
-        return ADAChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.cosmos:
-        return CosmosChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.ton:
-        return TonChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.monero:
-        return MoneroChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.substrate:
-        return SubstrateChain.setup(network: network.toNetwork(), id: id);
       case NetworkType.bitcoinAndForked:
       case NetworkType.bitcoinCash:
         return BitcoinChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.sui:
-        return SuiChain.setup(network: network.toNetwork(), id: id);
-      case NetworkType.aptos:
-        return AptosChain.setup(network: network.toNetwork(), id: id);
       default:
         throw WalletExceptionConst.networkDoesNotExist;
     }
@@ -154,55 +130,6 @@ abstract final class Chain<
       case NetworkType.bitcoinAndForked:
         chain = BitcoinChain.deserialize(
             network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.substrate:
-        chain = SubstrateChain.deserialize(
-            network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.ethereum:
-        chain = EthereumChain.deserialize(
-            network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.cosmos:
-        chain =
-            CosmosChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.ton:
-        chain =
-            TonChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.tron:
-        chain =
-            TronChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.xrpl:
-        chain =
-            XRPChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.solana:
-        chain =
-            SolanaChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.stellar:
-        chain = StellarChain.deserialize(
-            network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.monero:
-        chain =
-            MoneroChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-
-      case NetworkType.cardano:
-        chain =
-            ADAChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.sui:
-        chain =
-            SuiChain.deserialize(network: network.toNetwork(), cbor: values);
-        break;
-      case NetworkType.aptos:
-        chain =
-            AptosChain.deserialize(network: network.toNetwork(), cbor: values);
         break;
       default:
         throw WalletExceptionConst.networkDoesNotExist;

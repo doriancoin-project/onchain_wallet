@@ -59,8 +59,7 @@ class _UpdateTokenDetailsViewState extends State<UpdateTokenDetailsView>
   void onInitOnce() {
     super.onInitOnce();
     canChangeDecimal = _canChangeDecimal();
-    if (canChangeDecimal ||
-        widget.account.network.type == NetworkType.stellar) {
+    if (canChangeDecimal) {
       decimal = (widget.token as Token).decimal;
       tokenDecimal = decimal;
     }
@@ -188,9 +187,6 @@ class _UpdateTokenDetailsViewState extends State<UpdateTokenDetailsView>
 
   bool _canChangeDecimal() {
     switch (widget.account.network.type) {
-      case NetworkType.stellar:
-      case NetworkType.xrpl:
-        return false;
       default:
         return true;
     }

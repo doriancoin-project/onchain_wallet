@@ -6,21 +6,9 @@ import 'package:on_chain_wallet/wallet/web3/constant/constant/exception.dart';
 import 'package:on_chain_wallet/wallet/web3/core/messages/messages.dart';
 import 'package:on_chain_wallet/wallet/web3/core/methods/methods.dart';
 import 'package:on_chain_wallet/wallet/web3/core/permission/permission.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/aptos/params/core/request.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin/params/core/request.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin_cash/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/cardano/params/params.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/cosmos/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ethereum/params/core/request.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/global/global.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/monero/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ripple/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/solana/solana.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/stellar/stellar.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/substrate/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/sui/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/ton/ton.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/tron/tron.dart';
 
 import 'web_request.dart';
 
@@ -155,54 +143,6 @@ abstract class Web3RequestParams<
         Web3NetworkRequestMethods.fromTag(values.elementAs(0)).network;
     final Web3RequestParams param;
     switch (network) {
-      case NetworkType.ethereum:
-        param = Web3EthereumRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.tron:
-        param = Web3TronRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.solana:
-        param = Web3SolanaRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.xrpl:
-        param = Web3XRPRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.monero:
-        param = Web3MoneroRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.cardano:
-        param = Web3ADARequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.ton:
-        param = Web3TonRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.stellar:
-        param = Web3StellarRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.substrate:
-        param = Web3SubstrateRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.aptos:
-        param = Web3AptosRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.sui:
-        param = Web3SuiRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.cosmos:
-        param = Web3CosmosRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
       case NetworkType.bitcoinAndForked:
         param = Web3BitcoinRequestParam.deserialize(
             bytes: bytes, object: object, hex: hex);

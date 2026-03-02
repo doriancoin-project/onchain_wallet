@@ -6,8 +6,6 @@ import 'package:on_chain_wallet/future/wallet/network/substrate/transaction/type
 import 'package:on_chain_wallet/future/widgets/widgets/json/json/widgets.dart';
 import 'package:on_chain_wallet/wallet/chain/account.dart';
 import 'package:on_chain_wallet/wallet/models/transaction/core/transaction.dart';
-import 'package:polkadot_dart/polkadot_dart.dart'
-    show SubstrateXCMTransctionTrackerStatus;
 
 class SuccessXCMTransactionTextView extends StatelessWidget {
   const SuccessXCMTransactionTextView(

@@ -18,30 +18,12 @@ class Web3ValidatorUtils {
       chainId = chainId.split(":").last;
     }
     switch (type) {
-      case NetworkType.solana:
-        bool isBase58 = StringUtils.isBase58(chainId);
-        if (isBase58 && chainId.length > 32) {
-          return chainId.substring(0, 32);
-        }
-        return chainId;
       case NetworkType.bitcoinAndForked:
-      case NetworkType.monero:
-      case NetworkType.substrate:
         chainId = StringUtils.strip0x(chainId.toLowerCase());
         if (chainId.length > 32) {
           chainId = caip2.substring(0, 32);
         }
         break;
-      case NetworkType.tron:
-        chainId = chainId.toLowerCase();
-        if (chainId.startsWith("0x") &&
-            StringUtils.ixHexaDecimalNumber(chainId)) {
-          return chainId;
-        }
-        final blockNumner = IntUtils.tryParse(chainId);
-        if (blockNumner == null) return chainId;
-        return blockNumner.toRadix16;
-
       default:
     }
     return chainId;

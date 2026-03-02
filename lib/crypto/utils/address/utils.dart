@@ -1,29 +1,11 @@
 import 'package:bitcoin_base/bitcoin_base.dart';
 import 'package:blockchain_utils/blockchain_utils.dart';
-import 'package:cosmos_sdk/cosmos_sdk.dart';
-import 'package:monero_dart/monero_dart.dart';
 import 'package:on_chain_wallet/app/core.dart';
+import 'package:on_chain_wallet/crypto/doriancoin/doriancoin.dart';
 import 'package:on_chain_wallet/wallet/models/network/network.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
-import 'package:on_chain/on_chain.dart';
-import 'package:polkadot_dart/polkadot_dart.dart';
-import 'package:stellar_dart/stellar_dart.dart';
-import 'package:ton_dart/ton_dart.dart';
-import 'package:xrpl_dart/xrpl_dart.dart';
 
 class BlockchainAddressUtils {
-  static XRPAddress toRippleAddress(String address, WalletXRPNetwork network) {
-    try {
-      if (XRPAddressUtils.isXAddress(address)) {
-        return XRPAddress.fromXAddress(address,
-            isTestnet: !network.coins.first.conf.chainType.isMainnet);
-      }
-      return XRPAddress(address);
-    } catch (e) {
-      throw ArgumentError("invalid ${network.coinParam.token.name} address");
-    }
-  }
-
   static BitcoinBaseAddress toBitcoinAddress(
       String address, BasedUtxoNetwork network,
       {BitcoinAddressType? p2shAddressType}) {
@@ -41,6 +23,8 @@ class BlockchainAddressUtils {
         addr = LitecoinAddress(address, network: network).baseAddress;
       } else if (network is PepeNetwork) {
         addr = PepeAddress(address, network: network).baseAddress;
+      } else if (network is DoriancoinNetwork) {
+        addr = DoriancoinAddress(address, network: network).baseAddress;
       } else {
         throw UnimplementedError();
       }
@@ -173,116 +157,10 @@ class BlockchainAddressUtils {
     return address;
   }
 
-  static ETHAddress? validatorEthereumAccount(String address) {
-    return MethodUtils.nullOnException(() {
-      return ETHAddress(address);
-    });
-  }
-
-  static AptosAddress? validateAptosAddress(String address) {
-    return MethodUtils.nullOnException(() {
-      return AptosAddress(address);
-    });
-  }
-
-  static SuiAddress? validateSuiAddress(String address) {
-    return MethodUtils.nullOnException(() {
-      return SuiAddress(address);
-    });
-  }
-
-  static MoneroAddress? validateMoneroAddress(
-      String address, WalletMoneroNetwork network) {
-    return MethodUtils.nullOnException(() {
-      try {
-        return MoneroAddress(address, network: network.coinParam.network);
-      } catch (_) {
-        return null;
-      }
-    });
-  }
-
-  static TronAddress? validatorTronAccount(String address) {
-    return MethodUtils.nullOnException(() {
-      return TronAddress(address);
-    });
-  }
-
-  static SolAddress? validatorSolAccount(String address) {
-    return MethodUtils.nullOnException(() {
-      return SolAddress(address);
-    });
-  }
-
-  static ADAAddress? validatorCardanoAddress(
-      String address, WalletCardanoNetwork network) {
-    return MethodUtils.nullOnException(() {
-      return ADAAddress.fromAddress(address,
-          network: network.coinParam.networkType);
-    });
-  }
-
-  static CosmosBaseAddress? validateCosmosAddress(
-      String address, WalletCosmosNetwork network) {
-    return MethodUtils.nullOnException(() {
-      return CosmosBaseAddress(address, forceHrp: network.coinParam.hrp);
-    });
-  }
-
-  static TonAddress? validateTonAddress(
-      String address, WalletTonNetwork network) {
-    return MethodUtils.nullOnException(() {
-      return TonAddress(address, forceWorkchain: network.coinParam.workchain);
-    });
-  }
-
-  static StellarAddress? validateStallerAddress(
-      String address, WalletStellarNetwork network) {
-    return MethodUtils.nullOnException(() {
-      return StellarAddress.fromBase32Addr(address);
-    });
-  }
-
   static BitcoinBaseAddress? validateBitcoinNetwork(
       String address, WalletBitcoinNetwork network) {
     return MethodUtils.nullOnException(() {
       return toBitcoinAddress(address, network.coinParam.transacationNetwork);
-    });
-  }
-
-  static BaseSubstrateAddress? validateSubstrateAddress(
-      String address, WalletSubstrateNetwork network) {
-    return MethodUtils.nullOnException(() {
-      if (network.coinParam.substrateChainType.isEthereum) {
-        return SubstrateEthereumAddress(address);
-      }
-      return SubstrateAddress(address,
-          ss58Format: network.coinParam.ss58Format);
-    });
-  }
-
-  static XRPAddress? validateXRPAddress(
-      String address, WalletXRPNetwork network,
-      {int? tag}) {
-    return MethodUtils.nullOnException(() {
-      return BlockchainAddressUtils.toRippleAddress(address, network);
-    });
-  }
-
-  static XRPAddress? validateXAddressTag(
-      {required String? addr,
-      required WalletXRPNetwork network,
-      required int? tag}) {
-    if (addr == null) return null;
-    return MethodUtils.nullOnException(() {
-      final address = BlockchainAddressUtils.toRippleAddress(addr, network);
-      if (tag != null) {
-        if (address.tag == tag) return address;
-        if (address.tag != null && address.tag != tag) return null;
-        return XRPAddress(address.toXAddress(
-            tag: tag, isTestnet: !network.coinParam.mainnet));
-      }
-      return address;
     });
   }
 
@@ -291,34 +169,7 @@ class BlockchainAddressUtils {
     if (address == null) return null;
     const int minumumAddressLength = 32;
     if (address.length < minumumAddressLength) return null;
-    switch (network.type) {
-      case NetworkType.xrpl:
-        return validateXRPAddress(address, network.toNetwork());
-      case NetworkType.ethereum:
-        return validatorEthereumAccount(address);
-      case NetworkType.sui:
-        return validateSuiAddress(address);
-      case NetworkType.aptos:
-        return validateAptosAddress(address);
-      case NetworkType.tron:
-        return validatorTronAccount(address);
-      case NetworkType.solana:
-        return validatorSolAccount(address);
-      case NetworkType.cardano:
-        return validatorCardanoAddress(address, network.toNetwork());
-      case NetworkType.cosmos:
-        return validateCosmosAddress(address, network.toNetwork());
-      case NetworkType.ton:
-        return validateTonAddress(address, network.toNetwork());
-      case NetworkType.stellar:
-        return validateStallerAddress(address, network.toNetwork());
-      case NetworkType.monero:
-        return validateMoneroAddress(address, network.toNetwork());
-      case NetworkType.substrate:
-        return validateSubstrateAddress(address, network.toNetwork());
-      default:
-        return validateBitcoinNetwork(address, network.toNetwork());
-    }
+    return validateBitcoinNetwork(address, network.toNetwork());
   }
 
   static bool isValidNetworkAddress(String? address, WalletNetwork network) {
@@ -327,9 +178,5 @@ class BlockchainAddressUtils {
 
   static List<Bip32KeyIndex> praseBip32Path(String path) {
     return Bip32PathParser.parse(path).elems;
-  }
-
-  static List<SubstratePathElem> praseSubstratePath(String path) {
-    return SubstratePathParser.parse(path).elems;
   }
 }

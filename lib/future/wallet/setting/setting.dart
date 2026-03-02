@@ -52,11 +52,6 @@ class _AppSettingViewState extends State<_AppSettingView>
     updateState(() {});
   }
 
-  void toggleSwap() {
-    wallet.toggleSwap();
-    updateState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     // final wallet = context.watch<WalletProvider>(StateConst.main);
@@ -157,16 +152,6 @@ class _AppSettingViewState extends State<_AppSettingView>
                         title: Text("webview".tr),
                         subtitle: Text("enable_webview_application".tr),
                       )),
-              AppListTile(
-                onTap: toggleSwap,
-                leading: const Icon(Icons.swap_horiz),
-                trailing: Switch(
-                  value: wallet.enableSwap,
-                  onChanged: (value) => toggleSwap(),
-                ),
-                title: Text("swap".tr),
-                subtitle: Text("enable_swap_application".tr),
-              ),
               const Divider(),
               AppListTile(
                 leading: const Icon(Icons.currency_bitcoin),

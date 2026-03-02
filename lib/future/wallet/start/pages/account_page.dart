@@ -44,8 +44,6 @@ class NetworkAccountPageView extends StatelessWidget {
                       APPAnimatedSwitcher<WalletPage>(
                           enable: wallet.walletPage,
                           widgets: {
-                            WalletPage.swap: (context) =>
-                                SwitchNetworkIcon(account: account),
                             WalletPage.webview: (context) =>
                                 WebViewAppBar(wallet.webviewContoller),
                           }),
@@ -96,10 +94,6 @@ class NetworkAccountPageView extends StatelessWidget {
                         items: [
                           BottomNavigationBarItem(
                               icon: Icon(Icons.wallet), label: 'wallet'.tr),
-                          if (wallet.enableSwap)
-                            BottomNavigationBarItem(
-                                icon: Icon(Icons.swap_horiz_rounded),
-                                label: 'swap'.tr),
                           if (wallet.enableWebView)
                             BottomNavigationBarItem(
                                 icon: Icon(Icons.travel_explore_outlined),

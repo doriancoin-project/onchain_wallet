@@ -36,13 +36,6 @@ class _DrawerViewState extends State<DrawerView> with SafeState<DrawerView> {
     updateState(() {});
   }
 
-  void toggleSwap() {
-    wallet.toggleSwap();
-    updateState(() {});
-  }
-
-  Future<void> swapSetting() async {}
-
   void toggleWalletLock() {
     if (wallet.wallet.isReadOnly) {
       context.openDialogPage(
@@ -225,24 +218,6 @@ class _DrawerViewState extends State<DrawerView> with SafeState<DrawerView> {
                         title: Text("webview".tr),
                         subtitle: Text("enable_webview_application".tr),
                       )),
-              AppListTile(
-                onTap: toggleSwap,
-                leading: const Icon(Icons.swap_horiz),
-                trailing: Switch(
-                  value: wallet.enableSwap,
-                  onChanged: (value) => toggleSwap(),
-                ),
-                title: Text("swap".tr),
-                subtitle: Text("enable_swap_application".tr),
-              ),
-              ConditionalWidget(
-                enable: wallet.enableSwap,
-                onActive: (context) => AppListTile(
-                    onTap: swapSetting,
-                    leading: const Icon(Icons.swap_horiz),
-                    title: Text("swap_settings".tr),
-                    subtitle: Text("swap_setting_desc".tr)),
-              ),
               const Divider(),
               AppListTile(
                 leading: const Icon(Icons.currency_bitcoin),

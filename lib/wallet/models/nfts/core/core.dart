@@ -5,7 +5,7 @@ import 'package:on_chain_wallet/app/serialization/cbor/cbor.dart';
 import 'package:on_chain_wallet/wallet/constant/tags/constant.dart';
 
 enum NFTType {
-  ;
+  unknown([0]);
 
   final List<int> tag;
   const NFTType(this.tag);

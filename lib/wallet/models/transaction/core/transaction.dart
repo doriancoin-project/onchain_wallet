@@ -150,7 +150,7 @@ abstract class ChainTransaction with CborSerializable, Equality {
     if (transaction is! T) {
       throw WalletExceptionConst.internalError("ChainTransaction");
     }
-    return transaction;
+    return transaction as T;
   }
 
   void updateStatus(WalletTransactionStatus status) {

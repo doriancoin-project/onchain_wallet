@@ -5,7 +5,6 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/future/state_managment/core/observer.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/controller/wallet/ui_wallet.dart';
-import 'package:on_chain_wallet/future/wallet/swap/controller/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/webview/controller/controller/controller.dart';
 import 'package:on_chain_wallet/marketcap/prices/live_currency.dart';
 import 'package:on_chain_wallet/wallet/api/provider/core/provider.dart';
@@ -14,17 +13,12 @@ import 'package:on_chain_wallet/wallet/models/others/models/wallet.dart';
 
 enum WalletPage {
   wallet,
-  swap,
   webview;
 
   bool get inWallet => this == wallet;
-  bool get inSwap => this == swap;
   bool get inWebview => this == webview;
-  static WalletPage findCurrentPage(
-      {required int index, required bool hasSwap}) {
+  static WalletPage findCurrentPage({required int index}) {
     if (index == 0) return WalletPage.wallet;
-    if (index == 2) return WalletPage.webview;
-    if (hasSwap) return WalletPage.swap;
     return WalletPage.webview;
   }
 }
@@ -33,20 +27,16 @@ mixin WalletProviderTabController on StateController {
   final _lock = SafeAtomicLock();
   final LiveCurrencies currency = LiveCurrencies();
   WebViewController? _webviewController;
-  SwapStateController? _swap;
   APPSetting get appSetting;
   WalletRouteObserver get observer;
   bool get supportWebView;
   UIWallet get wallet;
 
-  bool _enableSwap = false;
-  bool get enableSwap => _enableSwap;
   bool _enableWebview = false;
   bool get enableWebView => _enableWebview;
   bool _multipleTab = false;
   bool get multipleTab => _multipleTab;
   WebViewController? get webviewContoller => _webviewController;
-  SwapStateController? get swap => _swap;
 
   WalletPage _walletPage = WalletPage.wallet;
   WalletPage get walletPage => _walletPage;
@@ -99,24 +89,7 @@ mixin WalletProviderTabController on StateController {
       } else {
         await _initWebView();
       }
-      _multipleTab = _enableSwap || _enableWebview;
-      onChangeIndex(0);
-      notify();
-    });
-  }
-
-  void toggleSwap() {
-    _enableSwap = !_enableSwap;
-    updateWalletSetting(
-        appSetting.walletSetting.copyWith(enableSwap: _enableSwap));
-    _lock.run(() async {
-      if (!_enableSwap) {
-        _swap?.dispose();
-        _swap = null;
-      } else {
-        await _initSwap();
-      }
-      _multipleTab = _enableSwap || _enableWebview;
+      _multipleTab = _enableWebview;
       onChangeIndex(0);
       notify();
     });
@@ -135,24 +108,11 @@ mixin WalletProviderTabController on StateController {
     return false;
   }
 
-  Future<bool> _initSwap() async {
-    if (_swap == null && appSetting.walletSetting.enableSwap) {
-      _swap = SwapStateController(
-          chains: wallet.getChains(), liveCurrencies: currency);
-      _swap?.initSwap();
-      _enableSwap = true;
-      return true;
-    }
-    return false;
-  }
-
   void onChangeIndex(int index) {
     if (index == homepageIndex) return;
     _canPop = false;
     _homepageIndex = index;
-    _walletPage =
-        WalletPage.findCurrentPage(index: index, hasSwap: _enableSwap);
-    _swap?.onWalletPageChanged(_walletPage);
+    _walletPage = WalletPage.findCurrentPage(index: index);
     _cancelable.cancel();
     notify();
   }
@@ -160,9 +120,8 @@ mixin WalletProviderTabController on StateController {
   Future<void> _initTabs() async {
     _lock.run(() async {
       final webView = await _initWebView();
-      final swap = await _initSwap();
-      final multipleTab = _enableSwap || _enableWebview;
-      if (webView || swap || multipleTab != this.multipleTab) {
+      final multipleTab = _enableWebview;
+      if (webView || multipleTab != this.multipleTab) {
         _multipleTab = multipleTab;
         notify();
       }
@@ -171,13 +130,10 @@ mixin WalletProviderTabController on StateController {
 
   Future<void> _dispose() async {
     _lock.run(() async {
-      _swap?.dispose();
-      _swap = null;
-      _enableSwap = false;
       await _webviewController?.dispose();
       _webviewController = null;
       _enableWebview = false;
-      _multipleTab = _enableSwap || _enableWebview;
+      _multipleTab = _enableWebview;
       notify();
     });
   }

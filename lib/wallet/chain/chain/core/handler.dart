@@ -63,7 +63,7 @@ class ChainsHandler {
               return BitcoinNetworkController(
                   networks: chains.cast(), id: wallet.key);
             case NetworkType.bitcoinCash:
-              return BitcoinCashNetworkController(
+              return BitcoinNetworkController(
                   networks: chains.cast(), id: wallet.key);
             default:
               throw WalletExceptionConst.networkDoesNotExist;

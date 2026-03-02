@@ -54,7 +54,7 @@ abstract class Web3InternalChain<T extends Web3InternalNetwork>
     if (chain is! Web3InternalChain<T>) {
       throw WalletExceptionConst.internalError("Web3InternalChain");
     }
-    return chain;
+    return chain as Web3InternalChain<T>;
   }
 }
 

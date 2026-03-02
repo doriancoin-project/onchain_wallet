@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:on_chain_wallet/app/core.dart' show APPConst, MethodUtils;
+import 'package:on_chain_wallet/app/core.dart' show APPConst;
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/address_details.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
@@ -41,7 +41,6 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
   String? keyInNetwork;
   final StreamPageProgressController progressKey =
       StreamPageProgressController(initialStatus: StreamWidgetStatus.progress);
-  ICardanoAddress? adaLegacyAddress;
   late WalletNetwork network;
   String comperessedToNetworkFormat(String key) {
     switch (network.type) {
@@ -51,7 +50,6 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
   }
 
   Future<void> initPubKey() async {
-    adaLegacyAddress = isAdaLegacy();
     final wallet = context.wallet.wallet;
     network = wallet
         .getChains()
@@ -75,16 +73,6 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
         progressKey.errorText(result.localizationError, backToIdle: false);
       }
     }
-  }
-
-  ICardanoAddress? isAdaLegacy() {
-    if (widget.account is ICardanoAddress) {
-      final account = widget.account.cast<ICardanoAddress>();
-      if (account.addressInfo.isLegacy) {
-        return account;
-      }
-    }
-    return null;
   }
 
   void onChangeKey(PublicKeyDerivationResult? changeKey) {
@@ -137,7 +125,7 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
                         value: publicKey),
                     WidgetConstant.height20
                   ],
-                  _HDPathDetails(byronLegacy: adaLegacyAddress),
+                  WidgetConstant.sizedBox,
                   AnimatedSwitcher(
                     duration: APPConst.animationDuraion,
                     child: PublicKeysDataView(
@@ -150,35 +138,6 @@ class __BipAccountPublicKeyState extends State<_BipAccountPublicKey>
           WidgetConstant.sliverPaddingVertial40,
         ],
       ),
-    );
-  }
-}
-
-class _HDPathDetails extends StatelessWidget {
-  const _HDPathDetails({this.byronLegacy});
-  final ICardanoAddress? byronLegacy;
-
-  @override
-  Widget build(BuildContext context) {
-    final addressInfo = byronLegacy?.addressInfo as CardanoAddrDetails?;
-    if (addressInfo == null) return WidgetConstant.sizedBox;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("hd_path_key".tr, style: context.textTheme.titleMedium),
-        WidgetConstant.height8,
-        ContainerWithBorder(
-          onRemove: () {},
-          onRemoveIcon: CopyTextIcon(
-              isSensitive: false, dataToCopy: addressInfo.hdPathKeyHex!),
-          child: Text(
-            addressInfo.hdPathKeyHex!,
-            style: context.onPrimaryTextTheme.bodyMedium,
-          ),
-        ),
-        WidgetConstant.height20
-      ],
     );
   }
 }
@@ -231,37 +190,6 @@ class PublicKeysDataView extends StatelessWidget {
           WidgetConstant.height8,
           SecureContentView(content: viewKey.uncomprossed!, isSensitive: false),
         ],
-        ConditionalWidget(
-            onActive: (context) => _MoneroKeysView(pubKey: viewKey.cast()),
-            enable: viewKey.keyType == CryptoPublicKeyDataType.monero)
-      ],
-    );
-  }
-}
-
-class _MoneroKeysView extends StatelessWidget {
-  final MoneroPublicKeysView pubKey;
-  const _MoneroKeysView({required this.pubKey});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        WidgetConstant.height20,
-        Text("spend_public_key".tr, style: context.textTheme.titleMedium),
-        WidgetConstant.height8,
-        SecureContentView(
-          content: pubKey.spendPublicKey,
-          isSensitive: false,
-        ),
-        WidgetConstant.height20,
-        Text("view_public_key".tr, style: context.textTheme.titleMedium),
-        WidgetConstant.height8,
-        SecureContentView(
-          content: pubKey.viewPublicKey,
-          isSensitive: false,
-        ),
       ],
     );
   }
@@ -284,176 +212,10 @@ class _AddressInfo extends StatelessWidget {
               widget: AddressDetailsView(
                   address: account, color: context.onPrimaryContainer)),
         ),
-        switch (account.runtimeType) {
-          const (IMoneroAddress) => _MoneroAccountInfo(account.cast()),
-          const (IXRPAddress) => _XRPAddressInfo(account.cast()),
-          const (IStellarAddress) => _StellarAddressInfo(account.cast()),
-          const (ITonAddress) => _TonAddressInfo(account.cast()),
-          _ => WidgetConstant.sizedBox,
-        },
+        WidgetConstant.sizedBox,
         WidgetConstant.height20,
       ],
     );
   }
 }
 
-class _MoneroAccountInfo extends StatelessWidget {
-  final IMoneroAddress address;
-  const _MoneroAccountInfo(this.address);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      ConditionalWidget(
-          onDeactive: (context) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WidgetConstant.height20,
-                Text("primary_address".tr,
-                    style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    child: CopyableTextWidget(
-                        maxLines: 2,
-                        text:
-                            address.addrDetails.viewKey.primaryAddress.address,
-                        color: context.onPrimaryContainer)),
-              ],
-            );
-          },
-          onActive: (context) => WidgetConstant.sizedBox,
-          enable: address.addrDetails.isPrimary),
-      WidgetConstant.height20,
-      Text("account_index".tr, style: context.textTheme.titleMedium),
-      WidgetConstant.height8,
-      ContainerWithBorder(
-          child: Text(address.addrDetails.index.major.toString(),
-              style: context.onPrimaryTextTheme.bodyMedium)),
-      WidgetConstant.height20,
-      Text("address_index".tr, style: context.textTheme.titleMedium),
-      WidgetConstant.height8,
-      ContainerWithBorder(
-          child: Text(address.addrDetails.index.minor.toString(),
-              style: context.onPrimaryTextTheme.bodyMedium))
-    ]);
-  }
-}
-
-class _XRPAddressInfo extends StatelessWidget {
-  final IXRPAddress address;
-  const _XRPAddressInfo(this.address);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      ConditionalWidget(
-          onActive: (context) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WidgetConstant.height20,
-                Text("base_address".tr, style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    child: CopyableTextWidget(
-                        text: address.networkAddress.address,
-                        color: context.onPrimaryContainer,
-                        maxLines: 2)),
-                WidgetConstant.height20,
-                Text("tag".tr, style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    child: Text(address.tag?.toString() ?? "",
-                        style: context.onPrimaryTextTheme.bodyMedium)),
-              ],
-            );
-          },
-          onDeactive: (context) => WidgetConstant.sizedBox,
-          enable: address.tag != null)
-    ]);
-  }
-}
-
-class _StellarAddressInfo extends StatelessWidget {
-  final IStellarAddress address;
-  const _StellarAddressInfo(this.address);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      ConditionalWidget(
-          onActive: (context) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WidgetConstant.height20,
-                Text("base_address".tr, style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    child: CopyableTextWidget(
-                        text: address.networkAddress.baseAddress,
-                        color: context.onPrimaryContainer,
-                        maxLines: 2)),
-                WidgetConstant.height20,
-                Text("muxed_id".tr, style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                    child: Text(address.id?.toString() ?? "",
-                        style: context.onPrimaryTextTheme.bodyMedium)),
-              ],
-            );
-          },
-          onDeactive: (context) => WidgetConstant.sizedBox,
-          enable: address.id != null)
-    ]);
-  }
-}
-
-class _TonAddressInfo extends StatelessWidget {
-  final ITonAddress address;
-  const _TonAddressInfo(this.address);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      WidgetConstant.height20,
-      Text("wallet_version".tr, style: context.textTheme.titleMedium),
-      WidgetConstant.height8,
-      ContainerWithBorder(
-          child: Text(address.context.version.name,
-              style: context.onPrimaryTextTheme.bodyMedium)),
-      WidgetConstant.height20,
-      Text("type".tr, style: context.textTheme.titleMedium),
-      WidgetConstant.height8,
-      ContainerWithBorder(
-          child: ConditionalWidget(
-              onDeactive: (context) {
-                return Text("non_bouncable".tr,
-                    style: context.onPrimaryTextTheme.bodyMedium);
-              },
-              onActive: (context) {
-                return Text("bouncable".tr,
-                    style: context.onPrimaryTextTheme.bodyMedium);
-              },
-              enable: address.context.bouncable)),
-      ConditionalWidget(
-          onActive: (context) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                WidgetConstant.height20,
-                Text("sub_or_wallet_id".tr,
-                    style: context.textTheme.titleMedium),
-                WidgetConstant.height8,
-                ContainerWithBorder(
-                  child: Text(address.context.subOrWalletId?.toString() ?? ''),
-                ),
-              ],
-            );
-          },
-          onDeactive: (context) => WidgetConstant.sizedBox,
-          enable: address.context.subOrWalletId != null)
-    ]);
-  }
-}

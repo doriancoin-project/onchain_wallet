@@ -5,7 +5,6 @@ import 'package:on_chain_wallet/future/theme/theme.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 
 import 'package:on_chain_wallet/future/wallet/setting/color_selector.dart';
-import 'package:on_chain_wallet/future/wallet/swap/pages/pages/swap.dart';
 import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
 import 'package:on_chain_wallet/future/router/page_router.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
@@ -42,13 +41,7 @@ class _DrawerViewState extends State<DrawerView> with SafeState<DrawerView> {
     updateState(() {});
   }
 
-  Future<void> swapSetting() async {
-    wallet.swap?.updateSettings((controller) {
-      return context.openSliverDialog(
-          widget: (context) => SelectSwapProvidersView(controller),
-          label: 'swap_settings'.tr);
-    });
-  }
+  Future<void> swapSetting() async {}
 
   void toggleWalletLock() {
     if (wallet.wallet.isReadOnly) {

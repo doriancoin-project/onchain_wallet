@@ -1,6 +1,5 @@
 import 'package:blockchain_utils/bip/bip/bip.dart';
 import 'package:blockchain_utils/bip/ecc/curve/elliptic_curve_types.dart';
-import 'package:blockchain_utils/bip/substrate/substrate.dart';
 import 'package:flutter/material.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
@@ -32,21 +31,13 @@ class _Bip32KeyDerivationViewState extends State<Bip32KeyDerivationView>
       GlobalKey<AppTextFieldState>(
           debugLabel: "_Bip32KeyDerivationViewState_pathTextFieldKey");
   late final bool isSupportNoneHardend;
-  late final bool isSubstrate;
 
   void onSubmit() {
     if (!form.ready()) return;
-    AddressDerivationIndex keyIndex;
-    if (isSubstrate) {
-      keyIndex = SubstrateAddressIndex.fromPath(
-          currencyCoin: widget.coin as SubstrateCoins, substratePath: path);
-    } else {
-      keyIndex = Bip32AddressIndex.fromPath(
-          path: path,
-          currencyCoin: widget.coin,
-          seedGeneration: widget.seedGeneration);
-    }
-
+    final keyIndex = Bip32AddressIndex.fromPath(
+        path: path,
+        currencyCoin: widget.coin,
+        seedGeneration: widget.seedGeneration);
     context.pop(keyIndex);
   }
 
@@ -72,20 +63,7 @@ class _Bip32KeyDerivationViewState extends State<Bip32KeyDerivationView>
     return null;
   }
 
-  String? _validatorSubstrate(String? v) {
-    if (path.trim().isEmpty) return null;
-    try {
-      BlockchainAddressUtils.praseSubstratePath(path);
-      return null;
-    } catch (e) {
-      return "invalid_substrate_path".tr;
-    }
-  }
-
   String? validator(String? v) {
-    if (isSubstrate) {
-      return _validatorSubstrate(v);
-    }
     return _validatorBip32(v);
   }
 
@@ -99,7 +77,6 @@ class _Bip32KeyDerivationViewState extends State<Bip32KeyDerivationView>
   void onInitOnce() {
     super.onInitOnce();
     path = widget.defaultPath ?? "";
-    isSubstrate = widget.coin.proposal == SubstratePropoosal.substrate;
     isSupportNoneHardend = curve != EllipticCurveTypes.ed25519;
   }
 
@@ -114,10 +91,7 @@ class _Bip32KeyDerivationViewState extends State<Bip32KeyDerivationView>
               message: "custom_key_derivation_desc".tr, enableTap: false),
           WidgetConstant.height20,
           Text("derivation_path".tr, style: context.textTheme.titleMedium),
-          if (isSubstrate)
-            Text("hd_wallet_substrate_hardened_desc".tr)
-          else
-            Text("hd_wallet_hardened_desc".tr),
+          Text("hd_wallet_hardened_desc".tr),
           WidgetConstant.height8,
           AppTextField(
             onChanged: onChangePath,

@@ -6,28 +6,7 @@ enum NewAccountParamsType {
       CborTagsConst.bitcoinCashMultiSigNewAddressParams),
   bitcoinNewAddressParams(CborTagsConst.bitcoinNewAddressParams),
   bitcoinMultiSigNewAddressParams(
-      CborTagsConst.bitcoinMultiSigNewAddressParams),
-  cardanoNewAddressParams(CborTagsConst.cardanoNewAddressParams),
-  cardanoMultisigNewAddressParams(
-      CborTagsConst.cardanoNewMultisigAddressParams),
-  cosmosNewAddressParams(CborTagsConst.cosmosNewAddressParams),
-  ethereumNewAddressParamss(CborTagsConst.ethereumNewAddressParamss),
-  solanaNewAddressParams(CborTagsConst.solanaNewAddressParams),
-  substrateNewAddressParams(CborTagsConst.substrateNewAddressParams),
-  substrateMultisigNewAddressParams(
-      CborTagsConst.substrateMultisigNewAddressParams),
-  tronNewAddressParams(CborTagsConst.tronNewAddressParams),
-  tronMultisigNewAddressParams(CborTagsConst.tronMultisigNewAddressParams),
-  tonNewAddressParams(CborTagsConst.tonNewAddressParams),
-  rippleNewAddressParams(CborTagsConst.rippleNewAddressParams),
-  rippleMultiSigNewAddressParams(CborTagsConst.rippleMultiSigNewAddressParams),
-  stellarNewAddressParams(CborTagsConst.stellarNewAddressParams),
-  moneroNewAddressParams(CborTagsConst.moneroNewAddressParams),
-
-  suiNewAddressParams(CborTagsConst.suiNewAddressParams),
-  suiMultisigNewAddressParams(CborTagsConst.suiMultisigNewAddressParams),
-  aptosNewAddressParams(CborTagsConst.aptosNewAddressParams),
-  aptosMultisigNewAddressParams(CborTagsConst.aptosMultisigNewAddressParams);
+      CborTagsConst.bitcoinMultiSigNewAddressParams);
 
   final List<int> tag;
   const NewAccountParamsType(this.tag);
@@ -73,60 +52,6 @@ abstract final class NewAccountParams<ACCOUNT extends ChainAccount>
         break;
       case NewAccountParamsType.bitcoinMultiSigNewAddressParams:
         params = BitcoinMultiSigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.cardanoNewAddressParams:
-        params = CardanoNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.cardanoMultisigNewAddressParams:
-        params = CardanoMultisigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.cosmosNewAddressParams:
-        params = CosmosNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.ethereumNewAddressParamss:
-        params = EthereumNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.solanaNewAddressParams:
-        params = SolanaNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.substrateNewAddressParams:
-        params = SubstrateNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.substrateMultisigNewAddressParams:
-        params = SubstrateMultiSigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.tronNewAddressParams:
-        params = TronNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.tronMultisigNewAddressParams:
-        params = TronMultisigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.tonNewAddressParams:
-        params = TonNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.rippleNewAddressParams:
-        params = RippleNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.rippleMultiSigNewAddressParams:
-        params = RippleMultiSigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.stellarNewAddressParams:
-        params = StellarNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.moneroNewAddressParams:
-        params = MoneroNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.aptosNewAddressParams:
-        params = AptosNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.suiNewAddressParams:
-        params = SuiNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.suiMultisigNewAddressParams:
-        params = SuiMultiSigNewAddressParams.deserialize(object: decode);
-        break;
-      case NewAccountParamsType.aptosMultisigNewAddressParams:
-        params = AptosMultiSigNewAddressParams.deserialize(object: decode);
         break;
     }
     if (params is! NewAccountParams<ACCOUNT>) {

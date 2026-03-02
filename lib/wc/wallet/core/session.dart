@@ -16,7 +16,6 @@ import 'package:on_chain_wallet/wallet/web3/networks/global/params/connect.dart'
 import 'package:on_chain_wallet/wallet/web3/utils/web3_validator_utils.dart';
 import 'package:on_chain_wallet/wc/wallet/core/network.dart';
 import 'package:on_chain_wallet/wc/wallet/networks/bitcoin.dart';
-import 'package:on_chain_wallet/wc/wallet/networks/bitcoin_cash.dart';
 import 'package:on_chain_wallet/wc/wallet/types/types.dart';
 import 'package:on_chain_wallet/wc/core/types/types.dart';
 
@@ -39,8 +38,6 @@ class Web3WalletConnectSessionHandler extends Web3WalletHandler<
       : _session = session;
   late final Map<NetworkType, Web3WalletConnectStateHandler> _networks = {
     NetworkType.bitcoinAndForked: BitcoinWeb3WalletConnectStateHandler(
-        sendInternalMessage: _sendInternalWalletMessage),
-    NetworkType.bitcoinCash: BitcoinCashWeb3WalletConnectStateHandler(
         sendInternalMessage: _sendInternalWalletMessage),
   };
 

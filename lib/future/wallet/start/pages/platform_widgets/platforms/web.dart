@@ -9,7 +9,6 @@ import 'package:on_chain_wallet/future/wallet/controller/extension/models/models
 import 'package:on_chain_wallet/future/wallet/controller/wallet/cross/web.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 
-import 'package:on_chain_wallet/future/wallet/swap/pages/pages/swap.dart';
 import 'package:on_chain_wallet/future/wallet/web3/pages/client_info.dart';
 import 'package:on_chain_wallet/future/wallet/web3/pages/permission_view.dart';
 import 'package:on_chain_wallet/future/widgets/widgets/list_tile.dart';
@@ -101,22 +100,6 @@ class _AppbarExtentionWidget extends StatelessWidget {
                       },
                       trailing: const Icon(Icons.settings),
                       title: Text("settings".tr,
-                          style: context.textTheme.labelMedium),
-                    ),
-                  ),
-                if (wallet.walletPage.inSwap)
-                  PopupMenuItem<ExtensionWalletContextType>(
-                    child: AppListTile(
-                      onTap: () {
-                        wallet.swap?.updateSettings((controller) {
-                          return context.openSliverDialog(
-                              widget: (context) =>
-                                  SelectSwapProvidersView(controller),
-                              label: 'swap_settings'.tr);
-                        });
-                      },
-                      trailing: const Icon(Icons.swap_horiz_outlined),
-                      title: Text("swap_settings".tr,
                           style: context.textTheme.labelMedium),
                     ),
                   ),
@@ -225,22 +208,6 @@ class _AppbarWebWidget extends StatelessWidget {
                       },
                       trailing: const Icon(Icons.settings),
                       title: Text("settings".tr,
-                          style: context.textTheme.labelMedium),
-                    ),
-                  ),
-                if (wallet.walletPage.inSwap)
-                  PopupMenuItem<ExtensionWalletContextType>(
-                    child: AppListTile(
-                      onTap: () {
-                        wallet.swap?.updateSettings((controller) {
-                          return context.openSliverDialog(
-                              widget: (context) =>
-                                  SelectSwapProvidersView(controller),
-                              label: 'swap_settings'.tr);
-                        });
-                      },
-                      trailing: const Icon(Icons.swap_horiz_outlined),
-                      title: Text("swap_settings".tr,
                           style: context.textTheme.labelMedium),
                     ),
                   ),

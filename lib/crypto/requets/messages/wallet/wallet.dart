@@ -5,7 +5,6 @@ export 'requests/get_public_keys.dart';
 export 'requests/personal_sign.dart';
 export 'requests/read_mnemonic.dart';
 export 'requests/sign.dart';
-export 'requests/typed_data.dart';
 export 'requests/update_wallet_keys.dart';
 export 'requests/wallet_remove_key.dart';
 export 'requests/wallet_backup.dart';

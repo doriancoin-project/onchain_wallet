@@ -6,7 +6,7 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/global/pages/types.dart';
-import 'package:on_chain_wallet/future/wallet/network/bitcoin/web3/permission/btcoin_cash_permission.dart';
+
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/web3/permission/web3_permission.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 import 'package:on_chain_wallet/future/wallet/web3/pages/client_info.dart';
@@ -392,10 +392,6 @@ class __Web3APPPermissionViewState extends State<_Web3ApplicationPermissionView>
                                 image: APPConst.btc,
                                 disabled: chainDisabled(
                                     NetworkType.bitcoinAndForked)),
-                            _NavigationRailDestination(
-                                image: APPConst.bch,
-                                disabled:
-                                    chainDisabled(NetworkType.bitcoinCash)),
                           ],
                           selectedIndex: _selectedIndex,
                         ),
@@ -464,8 +460,6 @@ class _APPPermissionWidget extends StatelessWidget {
               0: (context) => _APPSettingView(state),
               1: (context) => BitcoinWeb3PermissionView(
                   key: state.permissionState[1], application: application),
-              2: (context) => BitcoinCashWeb3PermissionView(
-                  key: state.permissionState[2], application: application),
             },
           ),
           WidgetConstant.sliverPaddingVertial40,

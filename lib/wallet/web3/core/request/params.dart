@@ -7,7 +7,6 @@ import 'package:on_chain_wallet/wallet/web3/core/messages/messages.dart';
 import 'package:on_chain_wallet/wallet/web3/core/methods/methods.dart';
 import 'package:on_chain_wallet/wallet/web3/core/permission/permission.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin/params/core/request.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/bitcoin_cash/params/core/request.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/global/global.dart';
 
 import 'web_request.dart';
@@ -145,10 +144,6 @@ abstract class Web3RequestParams<
     switch (network) {
       case NetworkType.bitcoinAndForked:
         param = Web3BitcoinRequestParam.deserialize(
-            bytes: bytes, object: object, hex: hex);
-        break;
-      case NetworkType.bitcoinCash:
-        param = Web3BitcoinCashRequestParam.deserialize(
             bytes: bytes, object: object, hex: hex);
         break;
       default:

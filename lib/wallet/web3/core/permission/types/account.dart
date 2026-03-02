@@ -7,7 +7,6 @@ import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/wallet/wallet.dart';
 import 'package:on_chain_wallet/wallet/web3/constant/constant/exception.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin/bitcoin.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/bitcoin_cash/permission/models/account.dart';
 
 abstract class Web3ChainAccount<NETWORKADDRESS>
     with CborSerializable, Equality {
@@ -95,8 +94,6 @@ abstract class Web3ChainAuthenticated<CHAINACCOUNT extends Web3ChainAccount>
     return switch (type) {
       NetworkType.bitcoinAndForked =>
         Web3BitcoinChainAuthenticated.deserialize(object: tag),
-      NetworkType.bitcoinCash =>
-        Web3BitcoinCashChainAuthenticated.deserialize(object: tag),
       _ => throw Web3RequestExceptionConst.networkDoesNotExists
     } as Web3ChainAuthenticated<CHAINACCOUNT>;
   }

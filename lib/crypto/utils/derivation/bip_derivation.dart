@@ -29,60 +29,6 @@ class BipDerivationUtils {
         subId: subId);
   }
 
-  static Bip32AddressIndex findMoneroNextBip32Index(
-      {required BipCoins coin,
-      required List<IMoneroAddress> addresses,
-      required SeedTypes seedGenerationType,
-      int? coinType,
-      int? subId,
-      int major = 0,
-      int minor = 0}) {
-    // final List<Bip32AddressIndex> existsIndexes = addresses
-    //     .map((e) => e.keyIndex)
-    //     .whereType<Bip32AddressIndex>()
-    //     .toList();
-    final int purposeIndex = coin.proposal.purpose.index;
-    final int coinIndex =
-        Bip32KeyIndex.hardenIndex(coinType ?? coin.conf.coinIdx).index;
-    final def = Bip32PathParser.parse(coin.conf.defPath);
-    if (def.elems.isEmpty) {
-      throw AppCryptoException("Invalid_coin_default_path");
-    }
-
-    final List<int?> indexKeyes = List.from([
-      def.elems.elementAtOrNull(0)!.index,
-      def.elems.elementAtOrNull(1)?.index,
-      def.elems.elementAtOrNull(2)?.index,
-    ], growable: false);
-    int? getCorrectIndex(int elemIndex, int elemValidIndex, int index) {
-      if (elemIndex == elemValidIndex) return index;
-      return indexKeyes[elemIndex];
-    }
-
-    final validIndex = indexKeyes.lastIndexWhere((element) => element != null);
-    final startIndex = def.elems.elementAt(validIndex).index;
-    for (int i = startIndex; i < Bip32KeyDataConst.keyIndexMaxVal; i++) {
-      Bip32AddressIndex newKeyIndex = Bip32AddressIndex(
-          purpose: purposeIndex,
-          coin: coinIndex,
-          accountLevel: getCorrectIndex(0, validIndex, i),
-          changeLevel: getCorrectIndex(1, validIndex, i),
-          addressIndex: getCorrectIndex(2, validIndex, i),
-          currencyCoin: coin,
-          seedGeneration: seedGenerationType);
-      if (subId != null) {
-        newKeyIndex = newKeyIndex.asSubWalletKey(subId);
-      }
-      if (!addresses.any((e) =>
-          e.keyIndex == newKeyIndex &&
-          e.addrDetails.index.major == major &&
-          e.addrDetails.index.minor == minor)) {
-        return newKeyIndex;
-      }
-    }
-    throw WalletExceptionConst.tooManyAccounts;
-  }
-
   static Bip32AddressIndex findNextBip32Index(
       {required BipCoins coin,
       required List<ChainAccount> addresses,

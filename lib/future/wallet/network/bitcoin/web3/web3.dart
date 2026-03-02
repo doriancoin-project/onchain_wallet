@@ -7,4 +7,3 @@ export 'pages/send_transaction.dart';
 export 'pages/sign_transaction.dart';
 export 'types/types.dart';
 export 'permission/web3_permission.dart';
-export 'permission/btcoin_cash_permission.dart';

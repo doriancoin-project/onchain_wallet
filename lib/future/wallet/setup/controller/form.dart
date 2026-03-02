@@ -4,15 +4,12 @@ import 'package:on_chain_wallet/app/core.dart';
 import 'package:on_chain_wallet/app/live_listener/progress_bar.dart';
 import 'package:on_chain_wallet/crypto/keys/access/crypto_keys/crypto_keys.dart';
 import 'package:on_chain_wallet/crypto/requets/messages/crypto/requests/generate_mnemonic.dart';
-import 'package:on_chain_wallet/crypto/requets/messages/crypto/requests/generate_monero_mnemonic.dart';
-import 'package:on_chain_wallet/crypto/requets/messages/crypto/requests/ton.dart';
 import 'package:on_chain_wallet/future/state_managment/state_managment.dart';
 import 'package:on_chain_wallet/future/wallet/controller/controller.dart';
 import 'package:on_chain_wallet/future/wallet/setup/types/types.dart';
 import 'package:on_chain_wallet/future/widgets/widgets/progress_bar/widgets/stream_page_progress.dart';
 import 'package:on_chain_wallet/future/widgets/widgets/text_field.dart';
 import 'package:on_chain_wallet/future/widgets/widgets/text_or_file_picker.dart';
-import 'package:on_chain_wallet/wallet/constant/networks/ton.dart';
 import 'package:on_chain_wallet/wallet/models/wallet/models/backup.dart';
 
 class MnemonicStateController with DisposableMixin, StreamStateController {
@@ -59,17 +56,9 @@ class MnemonicStateController with DisposableMixin, StreamStateController {
                 language: e, name: e.name.camelCase, identifier: e.name))
             .toList();
       case MnemonicType.monero:
-        return MoneroLanguages.values
-            .map((e) => MenemonicLanguageView(
-                language: e, name: e.name.camelCase, identifier: e.name))
-            .toList();
+        return [];
       case MnemonicType.ton:
-        return [
-          MenemonicLanguageView(
-              language: Bip39Languages.english,
-              name: Bip39Languages.english.name.camelCase,
-              identifier: Bip39Languages.english.name)
-        ];
+        return [];
     }
   }
 
@@ -82,19 +71,9 @@ class MnemonicStateController with DisposableMixin, StreamStateController {
                 name: "n_word".tr.replaceOne(e.value.toString())))
             .toList();
       case MnemonicType.monero:
-        return MoneroWordsNum.values
-            .map((e) => MnemonicWordCountView(
-                number: e.value,
-                name: "n_word".tr.replaceOne(e.value.toString())))
-            .toList();
+        return [];
       case MnemonicType.ton:
-        return List.generate(
-            (TonConst.maxTonMnemonicWords - TonConst.minTonMnemonicWords) + 1,
-            (i) {
-          final value = TonConst.minTonMnemonicWords + i;
-          return MnemonicWordCountView(
-              number: value, name: "n_word".tr.replaceOne(value.toString()));
-        });
+        return [];
     }
   }
 
@@ -166,8 +145,6 @@ class MnemonicStateController with DisposableMixin, StreamStateController {
     final language = switch (type) {
       MnemonicType.bip39 =>
         Bip39Languages.values.firstWhere((e) => e.name == languageIdentifier),
-      MnemonicType.monero =>
-        MoneroLanguages.values.firstWhere((e) => e.name == languageIdentifier),
       _ => null
     };
     Mnemonic mnemonic;
@@ -179,16 +156,9 @@ class MnemonicStateController with DisposableMixin, StreamStateController {
                 language: language as Bip39Languages, wordNums: wNum!));
         break;
       case MnemonicType.ton:
-        mnemonic = await walletProvider.wallet.crypto.cryptoIsolateRequest(
-            TonMenmonicGenerateMessage(
-                password: passphrase, wordsNum: wordCounts));
-        break;
+        throw WalletExceptionConst.unsuportedFeature;
       case MnemonicType.monero:
-        mnemonic = await walletProvider.wallet.cryptoIsolateRequest(
-            MoneroMenmonicGenerateMessage(
-                language: language as MoneroLanguages,
-                wordsNum: MoneroWordsNum.fromValue(wordCounts)));
-        break;
+        throw WalletExceptionConst.unsuportedFeature;
     }
     return GeneratedMnemonic(
         mnemonic: mnemonic,
@@ -336,17 +306,8 @@ class ExistsMnemonicStateController
           if (Bip39WordsNum.values.any((e) => e.value == length)) return null;
           return "invalid_bip39_mnemonic_words_length".tr;
         }(),
-      MnemonicType.monero => () {
-          if (MoneroWordsNum.values.any((e) => e.value == length)) return null;
-          return "invalid_monero_mnemonic_words_length".tr;
-        }(),
-      MnemonicType.ton => () {
-          if (length >= TonConst.minTonMnemonicWords &&
-              length <= TonConst.maxTonMnemonicWords) {
-            return null;
-          }
-          return "invalid_ton_mnemonic_words_length".tr;
-        }(),
+      MnemonicType.monero => "unsuported_feature".tr,
+      MnemonicType.ton => "unsuported_feature".tr,
     };
   }
 
@@ -364,28 +325,8 @@ class ExistsMnemonicStateController
             return null;
           }
         }(),
-      MnemonicType.monero => () {
-          try {
-            final language = MoneroWordsListFinder()
-                .findLanguage(mnemonic)
-                .item2 as MoneroLanguages;
-            return MenemonicLanguageView(
-                language: language,
-                name: language.name.camelCase,
-                identifier: language.name);
-          } catch (_) {
-            return null;
-          }
-        }(),
-      MnemonicType.ton => () {
-          if (mnemonic.toList().every(
-              (e) => TonMnemonicLanguages.english.wordList.contains(e))) {
-            return MenemonicLanguageView(
-                language: TonMnemonicLanguages.english,
-                name: TonMnemonicLanguages.english.name.camelCase,
-                identifier: TonMnemonicLanguages.english.name);
-          }
-        }(),
+      MnemonicType.monero => null,
+      MnemonicType.ton => null,
     };
   }
 
@@ -420,28 +361,10 @@ class ExistsMnemonicStateController
               type: type);
 
         case MnemonicType.ton:
-          CryptoKeyUtils.validateMnemonicWords(mnemonic.toList());
-          final isValid = await walletProvider.wallet.cryptoIsolateRequest(
-              TonMnemonicValidateMessage(
-                  mnemonic: mnemonic.toStr(), password: passphrase));
-          if (!isValid) {
-            throw AppCryptoExceptionConst.invalidMnemonic;
-          }
-          return GeneratedMnemonic(
-              mnemonic: mnemonic,
-              passphrase: passphrase,
-              language: language.language,
-              languageIdentifer: language.identifier,
-              type: type);
+          throw WalletExceptionConst.unsuportedFeature;
 
         case MnemonicType.monero:
-          MoneroMnemonicValidator().validate(mnemonic.toStr());
-          return GeneratedMnemonic(
-              mnemonic: mnemonic,
-              passphrase: passphrase,
-              language: language.language,
-              languageIdentifer: language.identifier,
-              type: type);
+          throw WalletExceptionConst.unsuportedFeature;
       }
     }, delay: APPConst.oneSecoundDuration);
     if (result.hasResult) {

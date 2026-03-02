@@ -2,7 +2,6 @@ import 'package:on_chain_wallet/app/utils/list/extension.dart';
 import 'package:on_chain_wallet/crypto/types/networks.dart';
 import 'package:on_chain_wallet/wallet/web3/constant/constant/exception.dart';
 import 'package:on_chain_wallet/wallet/web3/networks/bitcoin/methods/methods.dart';
-import 'package:on_chain_wallet/wallet/web3/networks/bitcoin_cash/methods/methods.dart';
 
 enum Web3RequestMode { silent, user }
 
@@ -78,8 +77,6 @@ abstract class Web3NetworkRequestMethods extends Web3RequestMethods {
     return switch (network) {
       NetworkType.bitcoinAndForked =>
         Web3BitcoinRequestMethods.fromId(tag!.last),
-      NetworkType.bitcoinCash =>
-        Web3BitcoinCashRequestMethods.fromId(tag!.last),
       _ => throw Web3RequestExceptionConst.invalidNetwork
     };
   }
@@ -87,7 +84,6 @@ abstract class Web3NetworkRequestMethods extends Web3RequestMethods {
   static List<Web3NetworkRequestMethods> getMethods(NetworkType network) {
     return switch (network) {
       NetworkType.bitcoinAndForked => Web3BitcoinRequestMethods.values,
-      NetworkType.bitcoinCash => Web3BitcoinCashRequestMethods.values,
       _ => throw Web3RequestExceptionConst.invalidNetwork
     };
   }

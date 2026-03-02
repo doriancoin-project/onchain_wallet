@@ -51,14 +51,10 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
       GlobalKey(debugLabel: "SelectAddress");
   final GlobalKey<FormState> formKey = GlobalKey(debugLabel: "SelectAddress_1");
   late final WalletNetwork network = widget.account.network;
-  late final bool isRippleNetwork = false;
   String _address = "";
   bool allowAddAddress = true;
   final StreamValue<ContactCore<NETWORKADDRESS>?> newContact =
       StreamValue(null);
-  bool useRippleTag = false;
-  int? rippleAddressTag;
-
   void checkAllowAddAddress() {
     final max = widget.max;
     allowAddAddress = max == null || multipleReceipments.length < max;
@@ -111,16 +107,6 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
     rebuildFilterAccounts();
   }
 
-  void onChangeTag(int v) {
-    rippleAddressTag = v;
-  }
-
-  void onUseRippleTag(bool? v) {
-    useRippleTag = !useRippleTag;
-    rippleAddressTag = null;
-    updateState();
-  }
-
   ContactCore<NETWORKADDRESS>? _toNewContact(Object? addr) {
     return ContactCore.newContact(
         network: network, address: addr, name: "new_address".tr);
@@ -131,27 +117,6 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
         BlockchainAddressUtils.validateNetworkAddress(address, network);
     if (addr == null) return null;
     return _toNewContact(addr as NETWORKADDRESS);
-  }
-
-  (ContactCore<NETWORKADDRESS>?, String? error) _validateRipple(
-      String? address, int? tag) {
-    if (address == null) return (null, null);
-    final addr = MethodUtils.nullOnException(() {
-      if (address.trim().isEmpty) return null;
-      return BlockchainAddressUtils.toRippleAddress(
-          address, network.toNetwork());
-    });
-    if (addr == null) return (null, null);
-    if (tag != null) {
-      if (addr.tag == tag) return (_toNewContact(addr), null);
-      if (addr.tag != null && addr.tag != tag) {
-        return (null, "ripple_xaddress_tag_validator".tr);
-      }
-      final newAddress = BlockchainAddressUtils.validateXAddressTag(
-          addr: address, network: network.toNetwork(), tag: tag);
-      return (_toNewContact(newAddress), null);
-    }
-    return (_toNewContact(addr), null);
   }
 
   void _setValidate(ContactCore<NETWORKADDRESS>? contact) {
@@ -172,33 +137,13 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
     // MethodUtils.after(() async => updateState());
   }
 
-  String? validatorTag(String? v) {
-    final int? tag = int.tryParse(v ?? "");
-    if (tag == null || tag != rippleAddressTag) {
-      return "ripple_address_validator_desc".tr;
-    }
-    return null;
-  }
-
   String? validator(String? v) {
-    ContactCore<NETWORKADDRESS>? addr;
-    String? error;
-    if (isRippleNetwork) {
-      final validate = _validateRipple(v, rippleAddressTag);
-      addr = validate.$1;
-      error = validate.$2;
-    } else {
-      addr = _validate(v);
-    }
+    final addr = _validate(v);
     _setValidate(addr);
-    if (useRippleTag && rippleAddressTag == null) {
-      return "ripple_address_validator_desc".tr;
-    }
     if (addr == null) {
-      return error ??
-          "invalid_network_address"
-              .tr
-              .replaceOne(widget.account.network.networkName);
+      return "invalid_network_address"
+          .tr
+          .replaceOne(widget.account.network.networkName);
     }
     final filter = widget.onFilterAccount;
     if (filter != null) return filter(addr.addressObject);
@@ -218,13 +163,7 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
 
   void onAddReceipt() {
     if (!formKey.ready()) return;
-    ContactCore<NETWORKADDRESS>? addr;
-    if (isRippleNetwork) {
-      final validate = _validateRipple(_address, rippleAddressTag);
-      addr = validate.$1;
-    } else {
-      addr = _validate(_address);
-    }
+    final addr = _validate(_address);
 
     if (addr != null) {
       final ReceiptAddress<NETWORKADDRESS> receipt =
@@ -317,10 +256,7 @@ class _SelectRecipientAccountViewState<NETWORKADDRESS>
                 ),
               ),
           onDeactive: (context) => null),
-      body: switch (isRippleNetwork) {
-        false => _WriteAddress(state: this),
-        true => _WriteRippleAddress(state: this)
-      },
+      body: _WriteAddress(state: this),
     );
   }
 }
@@ -436,107 +372,3 @@ class _WriteAddress extends StatelessWidget {
   }
 }
 
-class _WriteRippleAddress extends StatelessWidget {
-  const _WriteRippleAddress({required this.state});
-  final _SelectRecipientAccountViewState state;
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-        controller: state.widget.scrollController,
-        slivers: [
-          SliverConstraintsBoxView(
-              padding: WidgetConstant.paddingHorizontal20,
-              sliver: MultiSliver(children: [
-                SliverToBoxAdapter(
-                  child: Form(
-                    key: state.formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppTextField(
-                          key: state.textFieldKey,
-                          label: "address".tr,
-                          minlines: 1,
-                          initialValue: state._address,
-                          maxLines: 2,
-                          suffixIcon: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              APPStreamBuilder(
-                                value: state.newContact,
-                                builder: (context, value) {
-                                  return APPAnimatedSwitcher(
-                                    widgets: {
-                                      true: (c) => IconButton(
-                                            onPressed: () {
-                                              state.onTapContact();
-                                            },
-                                            icon: const Icon(
-                                                Icons.account_circle),
-                                          ),
-                                      false: (c) => PasteTextIcon(
-                                            onPaste: state.onPaste,
-                                            isSensitive: false,
-                                          )
-                                    },
-                                    enable: value != null,
-                                  );
-                                },
-                              ),
-                              BarcodeScannerIconView(state.onPaste),
-                            ],
-                          ),
-                          validator: state.validator,
-                          onChanged: state.onChange,
-                        ),
-                        WidgetConstant.height20,
-                        AppCheckListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text("insert_address_tag".tr,
-                              style: context.textTheme.titleMedium),
-                          subtitle: Text("ripple_xaddress_feature".tr),
-                          onChanged: state.onUseRippleTag,
-                          value: state.useRippleTag,
-                        ),
-                        APPAnimatedSize(
-                            isActive: state.useRippleTag,
-                            onActive: (c) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    WidgetConstant.height8,
-                                    NumberTextField(
-                                        label: "tag".tr,
-                                        onChange: state.onChangeTag,
-                                        max: RippleConst.maxRippleTag,
-                                        defaultValue: state.rippleAddressTag,
-                                        validator: state.validatorTag,
-                                        min: 0),
-                                  ],
-                                ),
-                            onDeactive: (c) => WidgetConstant.sizedBox),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FixedElevatedButton(
-                                padding: WidgetConstant.paddingVertical40,
-                                onPressed: state.onAddReceipt,
-                                child: ConditionalWidgets(
-                                    enable: state.multipleSelect,
-                                    widgets: {
-                                      false: (context) =>
-                                          Text("setup_address".tr),
-                                      true: (context) =>
-                                          Text("add_to_address".tr)
-                                    }))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                _SelectFromAccounts(state: state),
-                WidgetConstant.sliverPaddingVertial40
-              ])),
-        ]);
-  }
-}

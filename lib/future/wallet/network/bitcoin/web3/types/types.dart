@@ -49,16 +49,12 @@ abstract class Web3BitcoinStateController<
     switch (request.params.method) {
       case Web3BitcoinRequestMethods.signMessage:
       case Web3BitcoinRequestMethods.signPersonalMessage:
-      case Web3BitcoinCashRequestMethods.signMessage:
-      case Web3BitcoinCashRequestMethods.signPersonalMessage:
         return Web3BitcoinSignMessageStateController(
             walletProvider: walletProvider, request: request.cast());
       case Web3BitcoinRequestMethods.sendTransaction:
-      case Web3BitcoinCashRequestMethods.sendTransaction:
         return Web3BitcoinSendTransactionStateController(
             walletProvider: walletProvider, request: request.cast());
       case Web3BitcoinRequestMethods.signTransaction:
-      case Web3BitcoinCashRequestMethods.signTransaction:
         return Web3BitcoinSignTransactionStateController(
             walletProvider: walletProvider, request: request.cast());
       default:

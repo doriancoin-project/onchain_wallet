@@ -380,8 +380,7 @@ class _CashTokenTransferForm extends StatelessWidget {
                                         "update_commitment".tr,
                                         child: StringWriterView(
                                           defaultValue: value,
-                                          maxLength:
-                                              RippleConst.maxDomainLength,
+                                          maxLength: 80,
                                           customForm:
                                               token.onValidateCommitment,
                                           title: PageTitleSubtitle(

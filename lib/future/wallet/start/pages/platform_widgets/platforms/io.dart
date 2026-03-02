@@ -3,7 +3,7 @@ import 'package:on_chain_wallet/future/router/page_router.dart';
 import 'package:on_chain_wallet/future/state_managment/extension/extension.dart';
 import 'package:on_chain_wallet/future/wallet/security/pages/accsess_wallet.dart';
 
-import 'package:on_chain_wallet/future/wallet/swap/pages/pages/swap.dart';
+
 import 'package:on_chain_wallet/future/widgets/widgets/list_tile.dart';
 import 'package:on_chain_wallet/future/widgets/widgets/widget_constant.dart';
 import 'package:on_chain_wallet/wallet/models/access/wallet_access.dart';
@@ -66,22 +66,6 @@ class _AppbarExtentionWidget extends StatelessWidget {
                   trailing: const Icon(Icons.settings),
                   title:
                       Text("settings".tr, style: context.textTheme.labelMedium),
-                ),
-              ),
-            if (wallet.walletPage.inSwap)
-              PopupMenuItem(
-                onTap: () {
-                  wallet.swap?.updateSettings((controller) {
-                    return context.openSliverDialog(
-                        widget: (context) =>
-                            SelectSwapProvidersView(controller),
-                        label: 'swap_settings'.tr);
-                  });
-                },
-                child: AppListTile(
-                  trailing: const Icon(Icons.swap_horiz_outlined),
-                  title: Text("swap_settings".tr,
-                      style: context.textTheme.labelMedium),
                 ),
               ),
           ];

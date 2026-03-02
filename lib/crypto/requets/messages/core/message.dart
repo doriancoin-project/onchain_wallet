@@ -126,13 +126,9 @@ abstract class CryptoRequest<T, A extends CborMessageResponseArgs>
         args = CryptoRequestDecryptChacha.deserialize(object: decode);
         break;
       case CryptoRequestMethod.generateMnemonic:
-        args = TonMenmonicGenerateMessage.deserialize(object: decode);
-        break;
       case CryptoRequestMethod.tonMnemonicToPrivateKey:
-        args = TonMnemonicToPrivateKeyMessage.deserialize(object: decode);
       case CryptoRequestMethod.tonMnemonicValidate:
-        args = TonMnemonicValidateMessage.deserialize(object: decode);
-        break;
+        throw AppCryptoExceptionConst.internalError("UnsupportedCryptoRequest");
       case CryptoRequestMethod.generateMasterKey:
         args = CryptoRequestGenerateMasterKey.deserialize(object: decode);
         break;
@@ -197,8 +193,7 @@ abstract class WalletRequest<T, A extends CborMessageResponseArgs>
         args = WalletRequestBitcoinSignMessage.deserialize(object: decode);
         break;
       case WalletRequestMethod.ethereumTypedDataSign:
-        args = WalletRequestEthereumTypedDataSign.deserialize(object: decode);
-        break;
+        throw AppCryptoExceptionConst.internalError("UnsupportedWalletRequest");
       case WalletRequestMethod.deriveAddress:
         args = WalletRequestDeriveAddress.deserialize(object: decode);
         break;

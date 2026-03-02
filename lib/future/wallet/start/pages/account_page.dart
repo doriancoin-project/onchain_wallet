@@ -6,7 +6,6 @@ import 'package:on_chain_wallet/future/wallet/global/global.dart';
 import 'package:on_chain_wallet/future/wallet/network/bitcoin/account/account.dart';
 import 'package:on_chain_wallet/future/wallet/start/pages/drawer_view.dart';
 import 'package:on_chain_wallet/future/wallet/start/pages/platform_widgets/widgets.dart';
-import 'package:on_chain_wallet/future/wallet/swap/pages/pages/swap.dart';
 import 'package:on_chain_wallet/future/wallet/wc/widgets/icon.dart';
 import 'package:on_chain_wallet/future/wallet/webview/pages/web_view.dart';
 import 'package:on_chain_wallet/future/widgets/custom_widgets.dart';
@@ -114,10 +113,6 @@ class NetworkAccountPageView extends StatelessWidget {
                             index: wallet.homepageIndex,
                             children: [
                               _WalletPage(account),
-                              if (wallet.enableSwap)
-                                SwapView(
-                                    swapController: wallet.swap!,
-                                    account: account),
                               if (wallet.enableWebView)
                                 WebView(wallet.webviewContoller!)
                             ],

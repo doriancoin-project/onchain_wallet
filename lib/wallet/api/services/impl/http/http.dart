@@ -111,8 +111,7 @@ abstract class HTTPService<P extends APIProvider>
     try {
       final toUri = _toUri(url);
 
-      final Map<String, String> requestHeaders =
-          headers ?? {'Content-Type': 'application/json'};
+      final Map<String, String> requestHeaders = headers ?? {};
       response = await _callSynchronized<T>(() async {
         return await serviceCaller.call(
             url: toUri,

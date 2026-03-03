@@ -1,57 +1,53 @@
-name: Build Windows Application
+name: Build and Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths-ignore:
+      - 'docs/**'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: windows-latest
-
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set Flutter directory
-      run: echo "FLUTTER_ROOT=flutter_sdk" >> $GITHUB_ENV
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
 
-    - name: Download Flutter SDK
-      run: curl -L -o flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.3.8-stable.zip
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Create Flutter directory
-      run: powershell -Command "New-Item -Path 'flutter_sdk' -ItemType Directory -Force"
+      - name: Build web
+        run: flutter build web --release --base-href "/"
 
-    - name: Extract Flutter SDK
-      run: powershell -Command "Expand-Archive -Path 'flutter.zip' -DestinationPath 'flutter_sdk'"
+      - name: Add CNAME
+        run: echo "webwallet.doriancoin.com" > build/web/CNAME
 
-    - name: Add Flutter to PATH
-      run: echo "${{ github.workspace }}\\flutter_sdk\\flutter\\bin" >> $GITHUB_PATH
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-    - name: Set PATH environment variable
-      env:
-        PATH: ${{ github.workspace }}\\flutter_sdk\\flutter\\bin:${{ github.workspace }}\\flutter_sdk\\flutter\\bin\\cache\\dart-sdk\\bin:$PATH
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
 
-    - name: Verify Flutter installation
-      run: flutter --version
-
-    - name: Install dependencies
-      run: flutter pub get
-      working-directory: mrt_wallet
-
-    - name: Enable Windows desktop
-      run: flutter config --enable-windows-desktop
-      working-directory: mrt_wallet
-
-    - name: Build Windows
-      run: flutter build windows --release
-      working-directory: mrt_wallet
-
-    - name: Archive build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: windows-build
-        path: mrt_wallet/build/windows/runner/Release/
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

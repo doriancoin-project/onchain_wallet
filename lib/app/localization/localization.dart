@@ -3,9 +3,9 @@ enum APPLocale { en }
 class Localization {
   static Map<APPLocale, Map<String, String>> get languages => {
         APPLocale.en: {
-          "wellcome": "Welcome To OnChain Wallet",
+          "wellcome": "Doriancoin Web Wallet",
           "your_gateway_to_decentralized_world":
-              "Your Gateway to Decentralized World",
+              "Your Keys, Your Coins",
           "setup": "Setup wallet",
           "use_mnemonic": "Use Existing Mnemonic",
           "generate_mnemonic": "Generate New Mnemonic",

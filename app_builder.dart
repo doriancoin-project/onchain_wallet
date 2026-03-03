@@ -352,8 +352,8 @@ class _ExtensionAndWebScriptsBuilder {
     final bool content = commands.contains("--script-content");
     final bool background = commands.contains("--script-background");
     final bool isScriptPart = page || content || background;
-    final String baseHref = "--base-href=/onchain_wallet/";
-    // final String baseHref = "--base-href=/";
+    // final String baseHref = "--base-href=/onchain_wallet/";
+    final String baseHref = "--base-href=/";
     if (clean) {
       await _FlutterCommands.clean();
     }

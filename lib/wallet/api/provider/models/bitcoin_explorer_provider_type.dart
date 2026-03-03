@@ -3,7 +3,7 @@ import 'package:bitcoin_base/bitcoin_base.dart' show APIType;
 
 enum BitcoinExplorerProviderType {
   blockcypher("https://api.blockcypher.com"),
-  mempool("https://mempool.space");
+  mempool("https://blocks.doriancoin.com/api");
 
   final String url;
   const BitcoinExplorerProviderType(this.url);

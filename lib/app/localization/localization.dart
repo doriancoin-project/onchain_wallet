@@ -341,7 +341,7 @@ class Localization {
           "request_cancelled": "The request was cancelled",
           "invalid_request": "Invalid request",
           "settings": "Settings",
-          "about_onchain_wallet": "About OnChain Wallet",
+          "about_onchain_wallet": "About Doriancoin Webwallet",
           "active": "Active",
           "network_all_request_error": "All requests have encountered errors",
           "network_some_request_error": "Some requests have encountered errors",

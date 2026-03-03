@@ -33,13 +33,13 @@ class _DefaultAppCoins {
   };
 
   static const Map<int, String> addressExplorer = {
-    0: "https://explorer.doriancoin.com/address/#address",
-    1: "https://testnet.doriancoin.com/address/#address",
+    0: "https://blocks.doriancoin.com/address/#address",
+    1: "https://blocks.doriancoin.com/address/#address",
   };
 
   static const Map<int, String> txExplorer = {
-    0: "https://explorer.doriancoin.com/tx/#txid",
-    1: "https://testnet.doriancoin.com/tx/#txid",
+    0: "https://blocks.doriancoin.com/tx/#txid",
+    1: "https://blocks.doriancoin.com/tx/#txid",
   };
 }
 

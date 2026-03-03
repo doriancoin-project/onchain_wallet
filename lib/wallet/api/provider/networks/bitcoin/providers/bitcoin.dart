@@ -82,7 +82,7 @@ class BitcoinExplorerAPIProvider extends BaseBitcoinAPIProvider {
 
   APIConfig config(BasedUtxoNetwork network) =>
       _BitcoinExplorerAPIProviderUtils.createConfig(
-          network: network, type: explorerType.type);
+          network: network, type: explorerType.type, url: explorerType.url);
 
   @override
   String get callUrl => explorerType.url;

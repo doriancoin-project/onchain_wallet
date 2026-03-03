@@ -158,6 +158,7 @@ final class BitcoinChain extends Chain<
   @override
   Future<void> _updateAddressBalanceInternal(IBitcoinAddress address,
       {bool tokens = true}) async {
+    _utxos.remove(address);
     await onClient(onConnect: (client) async {
       await getAccountUtxos(address);
     });

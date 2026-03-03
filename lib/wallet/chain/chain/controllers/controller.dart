@@ -25,7 +25,7 @@ base mixin BaseChainController<
   bool get isCurrentWalletChain => _isCurrentWalletChain;
   late final List<String> _services = ChainConst.services(network);
   final CachedObject<void> _onUpdateAccountBalance =
-      CachedObject<void>(interval: const Duration(minutes: 10));
+      CachedObject<void>(interval: const Duration(seconds: 30));
 
   final OnceRunner<List<ADDRESS>> _loadAddresses = OnceRunner<List<ADDRESS>>();
 

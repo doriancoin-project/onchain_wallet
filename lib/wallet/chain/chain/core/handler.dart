@@ -54,21 +54,25 @@ class ChainsHandler {
       currentNetwork = 0;
     }
     final List<Chain> n = toMap.values.toList();
+    final List<NetworkController> controllers = [];
+    for (final networkType in NetworkType.values) {
+      final chains = n.where((e) => e.network.type == networkType).toList();
+      if (chains.isEmpty) continue;
+      switch (networkType) {
+        case NetworkType.bitcoinAndForked:
+          controllers.add(BitcoinNetworkController(
+              networks: chains.cast(), id: wallet.key));
+          break;
+        case NetworkType.bitcoinCash:
+          controllers.add(BitcoinNetworkController(
+              networks: chains.cast(), id: wallet.key));
+          break;
+        default:
+          throw WalletExceptionConst.networkDoesNotExist;
+      }
+    }
     return ChainsHandler._(
-        networks: List.generate(NetworkType.values.length, (i) {
-          final networkType = NetworkType.values[i];
-          final chains = n.where((e) => e.network.type == networkType).toList();
-          switch (networkType) {
-            case NetworkType.bitcoinAndForked:
-              return BitcoinNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            case NetworkType.bitcoinCash:
-              return BitcoinNetworkController(
-                  networks: chains.cast(), id: wallet.key);
-            default:
-              throw WalletExceptionConst.networkDoesNotExist;
-          }
-        }),
+        networks: controllers,
         network: currentNetwork,
         wallet: wallet,
         chain: toMap[currentNetwork]!);
@@ -202,21 +206,21 @@ class ChainsHandler {
   Future<List<Web3InternalChain>> getWeb3InternalChains(
       Web3ApplicationAuthentication authenticated,
       {List<NetworkType>? networks}) {
-    networks ??= NetworkType.values;
+    networks ??= _networks.keys.toList();
     return Future.wait(networks.map((e) =>
         _networks[e]!._getWeb3InternalChainAuthenticated(authenticated)));
   }
 
   Future<void> disconnectWeb3Chain(Web3ApplicationAuthentication app,
       {List<NetworkType>? networks}) async {
-    networks ??= NetworkType.values;
+    networks ??= _networks.keys.toList();
     await Future.wait(
         networks.map((e) => _networks[e]!._disconnectWeb3Chain(app)));
   }
 
   Future<Web3APPData> createAuth(Web3ApplicationAuthentication app,
       {List<NetworkType>? networks}) async {
-    networks ??= NetworkType.values;
+    networks ??= _networks.keys.toList();
 
     return Web3APPData(
         token: app.token,
@@ -296,10 +300,12 @@ class ChainsHandler {
   Future<void> init() async {
     await chain.init();
     assert(_networkStream == null && _ping == null);
-    if (appLogger.mode.isDev) return;
+    if (appLogger.mode.isDev) {
+      return;
+    }
     _networkStream =
         AppNativeMethods.platform.onNetworkStatus.listen(_onConnectionStatus);
-    _ping = Stream.periodic(const Duration(minutes: 10)).listen(_onPing);
+    _ping = Stream.periodic(const Duration(seconds: 30)).listen(_onPing);
     final emit = ChainWalletChainChangeEvent(prv: null, current: chain);
     _emitChainChanged(emit);
   }

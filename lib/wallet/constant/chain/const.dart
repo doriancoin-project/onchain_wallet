@@ -28,7 +28,7 @@ class _DefaultAppCoins {
   );
 
   static const Map<int, String> defaultChainGenesis = {
-    0: "d21da25e6e55719ba40fa15a47f06a2b90c97cac74cbb1aefb84040a13b18895",
+    0: "d21da25e277bd20b7456087d69c5fee2ebc6091b410271b5cb0623c7d1e7d1b9",
     1: "70776946e1e0a4d50e5e2baa3c0f678f5aa8b5e73c1e0a37d4b1a1b85a1f5c2d",
   };
 
